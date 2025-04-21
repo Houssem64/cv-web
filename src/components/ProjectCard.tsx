@@ -1,5 +1,8 @@
+"use client";
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { Project } from '../types/project';
 
 interface ProjectCardProps {
   id: string;
@@ -19,9 +22,10 @@ const ProjectCard = ({ id, title, description, image, tags }: ProjectCardProps) 
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover group-hover:scale-105 transition-transform duration-300"
+          loading="lazy"
         />
       </div>
-      <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
+      <h3 className="text-xl font-bold mb-2 group-hover:text-[#3490dc] transition-colors">
         {title}
       </h3>
       <p className="text-gray-600 mb-4 line-clamp-2">{description}</p>
@@ -35,7 +39,7 @@ const ProjectCard = ({ id, title, description, image, tags }: ProjectCardProps) 
           </span>
         ))}
       </div>
-      <Link href={`/projects/${id}`} className="btn btn-primary inline-block">
+      <Link href={`/projects/${id}`} className="btn btn-primary">
         View Project
       </Link>
     </div>

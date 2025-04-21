@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --header-height: 4rem;
+  }
+  
+  body {
+    @apply antialiased;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-md font-medium transition-colors inline-flex items-center justify-center;
+  }
+  
+  .btn-primary {
+    @apply bg-[#3490dc] text-white hover:bg-[#3490dc]/90;
+  }
+  
+  .btn-secondary {
+    @apply bg-[#ffed4a] text-[#1a202c] hover:bg-[#ffed4a]/90;
+  }
+
+  .card {
+    @apply bg-white rounded-lg shadow-md p-6 transition-shadow hover:shadow-lg;
+  }
+}

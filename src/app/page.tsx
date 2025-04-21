@@ -3,39 +3,17 @@ import Link from 'next/link';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ProjectCard from '../components/ProjectCard';
+import { getFeaturedProjects } from '../lib/api';
 
-// Sample project data
-const featuredProjects = [
-  {
-    id: '1',
-    title: 'E-commerce Platform',
-    description: 'A full-featured e-commerce platform built with Next.js and Stripe integration.',
-    image: 'https://images.unsplash.com/photo-1607082349566-187342175e2f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZWNvbW1lcmNlfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60',
-    tags: ['Next.js', 'React', 'Stripe', 'Tailwind CSS'],
-  },
-  {
-    id: '2',
-    title: 'Social Media Dashboard',
-    description: 'A comprehensive dashboard for managing social media accounts and analytics.',
-    image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8ZGFzaGJvYXJkfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60',
-    tags: ['React', 'ChartJS', 'Material UI', 'NodeJS'],
-  },
-  {
-    id: '3',
-    title: 'Task Management App',
-    description: 'A Kanban-style task management application with real-time updates.',
-    image: 'https://images.unsplash.com/photo-1540888747681-66ca5082b08d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dGFza3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60',
-    tags: ['React', 'Firebase', 'TypeScript', 'Redux'],
-  },
-];
-
-export default function Home() {
+export default async function Home() {
+  const featuredProjects = await getFeaturedProjects();
+  
   return (
     <main className="min-h-screen">
       <Navbar />
       
       {/* Hero Section */}
-      <section className="pt-16 lg:pt-24 pb-16 bg-gradient-to-br from-primary/10 to-white">
+      <section className="pt-16 lg:pt-24 pb-16 bg-gradient-to-br from-[#3490dc]/10 to-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -46,10 +24,10 @@ export default function Home() {
                 I build beautiful, functional websites and applications that help businesses grow and succeed.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/projects" className="btn btn-primary text-center">
+                <Link href="/projects" className="btn btn-primary">
                   View My Work
                 </Link>
-                <Link href="/contact" className="btn bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 text-center">
+                <Link href="/contact" className="btn bg-white border border-gray-300 text-gray-700 hover:bg-gray-50">
                   Contact Me
                 </Link>
               </div>
@@ -74,18 +52,27 @@ export default function Home() {
             <h2 className="text-3xl font-bold">Featured Projects</h2>
             <p className="text-gray-600 mt-2">Some of my recent work</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredProjects.map((project) => (
-              <ProjectCard
-                key={project.id}
-                id={project.id}
-                title={project.title}
-                description={project.description}
-                image={project.image}
-                tags={project.tags}
-              />
-            ))}
-          </div>
+          {featuredProjects.length === 0 ? (
+            <div className="text-center p-8 bg-gray-50 rounded-lg">
+              <p className="text-gray-600">No projects found. Add some projects from the admin panel.</p>
+              <Link href="/admin/login" className="btn btn-primary mt-4">
+                Go to Admin
+              </Link>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {featuredProjects.map((project) => (
+                <ProjectCard
+                  key={project._id}
+                  id={project._id}
+                  title={project.title}
+                  description={project.description}
+                  image={project.image}
+                  tags={project.tags}
+                />
+              ))}
+            </div>
+          )}
           <div className="text-center mt-12">
             <Link href="/projects" className="btn btn-primary">
               View All Projects
@@ -112,13 +99,13 @@ export default function Home() {
       </section>
 
       {/* Contact CTA Section */}
-      <section className="py-16 bg-primary text-white">
+      <section className="py-16 bg-[#3490dc] text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to start a project?</h2>
           <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto">
             Let's discuss your project and see how I can help bring your ideas to life.
           </p>
-          <Link href="/contact" className="btn bg-white text-primary hover:bg-gray-100 inline-block">
+          <Link href="/contact" className="btn bg-white text-[#3490dc] hover:bg-gray-100">
             Get in Touch
           </Link>
         </div>

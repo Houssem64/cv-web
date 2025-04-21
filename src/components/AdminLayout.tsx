@@ -30,7 +30,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)}></div>
         <div className="flex flex-col w-64 fixed inset-y-0 left-0 bg-white shadow-lg">
           <div className="flex items-center justify-between h-16 px-4 border-b">
-            <div className="text-xl font-semibold text-primary">Admin Panel</div>
+            <div className="text-xl font-semibold text-[#3490dc]">Admin Panel</div>
             <button
               className="text-gray-500 focus:outline-none"
               onClick={() => setSidebarOpen(false)}
@@ -48,7 +48,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   href={item.href}
                   className={`${
                     isActive(item.href)
-                      ? 'bg-primary text-white'
+                      ? 'bg-[#3490dc] text-white'
                       : 'text-gray-600 hover:bg-gray-100'
                   } group flex items-center px-3 py-2 rounded-md text-sm font-medium`}
                 >
@@ -74,7 +74,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       {/* Desktop sidebar */}
       <div className="hidden md:flex md:flex-col md:fixed md:inset-y-0 md:w-64 md:border-r md:border-gray-200 md:bg-white">
         <div className="flex items-center h-16 px-4 border-b">
-          <div className="text-xl font-semibold text-primary">Admin Panel</div>
+          <div className="text-xl font-semibold text-[#3490dc]">Admin Panel</div>
         </div>
         <div className="flex-1 overflow-y-auto py-4 px-2">
           <nav className="space-y-1">
@@ -84,7 +84,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 href={item.href}
                 className={`${
                   isActive(item.href)
-                    ? 'bg-primary text-white'
+                    ? 'bg-[#3490dc] text-white'
                     : 'text-gray-600 hover:bg-gray-100'
                 } group flex items-center px-3 py-2 rounded-md text-sm font-medium`}
               >
@@ -117,14 +117,14 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <div className="text-xl font-semibold text-primary">Admin Panel</div>
-          <Link href="/" className="text-sm text-primary hover:text-primary/80">
+          <div className="text-xl font-semibold text-[#3490dc]">Admin Panel</div>
+          <Link href="/" className="text-sm text-[#3490dc] hover:text-[#3490dc]/80">
             View Site
           </Link>
         </div>
         <div className="hidden md:flex items-center justify-between h-16 px-4 border-b bg-white">
           <div className="text-sm text-gray-500">Welcome to the admin dashboard</div>
-          <Link href="/" className="text-sm text-primary hover:text-primary/80">
+          <Link href="/" className="text-sm text-[#3490dc] hover:text-[#3490dc]/80">
             View Site
           </Link>
         </div>

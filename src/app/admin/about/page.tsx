@@ -400,12 +400,20 @@ export default function EditAbout() {
     <AdminLayout>
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-bold">Edit About Me</h1>
-        <Link
-          href="/admin/dashboard"
-          className="text-primary hover:text-primary/80"
-        >
-          &larr; Back to Dashboard
-        </Link>
+        <div className="flex space-x-4">
+          <Link
+            href="/admin/about/reset"
+            className="text-white bg-red-600 hover:bg-red-700 px-4 py-2 rounded-md text-sm"
+          >
+            Reset & Add Custom Data
+          </Link>
+          <Link
+            href="/admin/dashboard"
+            className="text-primary hover:text-primary/80"
+          >
+            &larr; Back to Dashboard
+          </Link>
+        </div>
       </div>
       
       {error && (

@@ -109,4 +109,23 @@ export async function updateAboutData(data: Partial<About>): Promise<About | nul
     console.error('Error updating about data:', error);
     return null;
   }
+}
+
+// Reset about me data (deletes existing and creates a new one with defaults)
+export async function resetAboutData(): Promise<About | null> {
+  try {
+    const baseUrl = getBaseUrl();
+    const response = await fetch(`${baseUrl}/api/about`, {
+      method: 'DELETE',
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to reset about data');
+    }
+    
+    return response.json();
+  } catch (error) {
+    console.error('Error resetting about data:', error);
+    return null;
+  }
 } 

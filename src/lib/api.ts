@@ -2,28 +2,19 @@ import { Project } from '../types/project';
 import { About } from '../types/about';
 import { Skill } from '../types/skill';
 import { Contact } from '../types/contact';
+import { getAbsoluteUrl } from './absolute-url';
 
 // Helper function to get the base URL
 function getBaseUrl() {
-  // For API routes, we can use relative URLs which will work in all environments
+  // We'll now use the absolute-url helper instead
   return '';
-  
-  /* Original implementation that causes issues on Vercel:
-  // Check if we're running on the server
-  if (typeof window === 'undefined') {
-    // Server-side - use environment variable or default to localhost
-    return process.env.NEXTAUTH_URL || 'http://localhost:3000';
-  }
-  // Client-side - use the window location
-  return window.location.origin;
-  */
 }
 
 // Fetch all projects
 export async function getAllProjects(): Promise<Project[]> {
   try {
-    const baseUrl = getBaseUrl();
-    const response = await fetch(`${baseUrl}/api/projects`, { 
+    const url = getAbsoluteUrl('/api/projects');
+    const response = await fetch(url, { 
       cache: 'no-store' 
     });
     
@@ -41,8 +32,8 @@ export async function getAllProjects(): Promise<Project[]> {
 // Fetch featured projects
 export async function getFeaturedProjects(): Promise<Project[]> {
   try {
-    const baseUrl = getBaseUrl();
-    const response = await fetch(`${baseUrl}/api/projects?featured=true`, { 
+    const url = getAbsoluteUrl('/api/projects?featured=true');
+    const response = await fetch(url, { 
       cache: 'no-store' 
     });
     
@@ -60,8 +51,8 @@ export async function getFeaturedProjects(): Promise<Project[]> {
 // Fetch a single project by ID
 export async function getProjectById(id: string): Promise<Project | null> {
   try {
-    const baseUrl = getBaseUrl();
-    const response = await fetch(`${baseUrl}/api/projects/${id}`, { 
+    const url = getAbsoluteUrl(`/api/projects/${id}`);
+    const response = await fetch(url, { 
       cache: 'no-store' 
     });
     
@@ -79,8 +70,8 @@ export async function getProjectById(id: string): Promise<Project | null> {
 // Fetch about me data
 export async function getAboutData(): Promise<About | null> {
   try {
-    const baseUrl = getBaseUrl();
-    const response = await fetch(`${baseUrl}/api/about`, { 
+    const url = getAbsoluteUrl('/api/about');
+    const response = await fetch(url, { 
       cache: 'no-store' 
     });
     
@@ -98,8 +89,8 @@ export async function getAboutData(): Promise<About | null> {
 // Update about me data
 export async function updateAboutData(data: Partial<About>): Promise<About | null> {
   try {
-    const baseUrl = getBaseUrl();
-    const response = await fetch(`${baseUrl}/api/about`, {
+    const url = getAbsoluteUrl('/api/about');
+    const response = await fetch(url, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -121,8 +112,8 @@ export async function updateAboutData(data: Partial<About>): Promise<About | nul
 // Reset about me data (deletes existing and creates a new one with defaults)
 export async function resetAboutData(): Promise<About | null> {
   try {
-    const baseUrl = getBaseUrl();
-    const response = await fetch(`${baseUrl}/api/about`, {
+    const url = getAbsoluteUrl('/api/about');
+    const response = await fetch(url, {
       method: 'DELETE',
     });
     
@@ -140,8 +131,8 @@ export async function resetAboutData(): Promise<About | null> {
 // Fetch all skills
 export async function getAllSkills(): Promise<Skill[]> {
   try {
-    const baseUrl = getBaseUrl();
-    const response = await fetch(`${baseUrl}/api/skills`, { 
+    const url = getAbsoluteUrl('/api/skills');
+    const response = await fetch(url, { 
       cache: 'no-store' 
     });
     
@@ -159,8 +150,8 @@ export async function getAllSkills(): Promise<Skill[]> {
 // Create a new skill
 export async function createSkill(data: {name: string, category?: string}): Promise<Skill | null> {
   try {
-    const baseUrl = getBaseUrl();
-    const response = await fetch(`${baseUrl}/api/skills`, {
+    const url = getAbsoluteUrl('/api/skills');
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -182,8 +173,8 @@ export async function createSkill(data: {name: string, category?: string}): Prom
 // Update a skill
 export async function updateSkill(id: string, data: {name: string, category?: string}): Promise<Skill | null> {
   try {
-    const baseUrl = getBaseUrl();
-    const response = await fetch(`${baseUrl}/api/skills/${id}`, {
+    const url = getAbsoluteUrl(`/api/skills/${id}`);
+    const response = await fetch(url, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -205,8 +196,8 @@ export async function updateSkill(id: string, data: {name: string, category?: st
 // Delete a skill
 export async function deleteSkill(id: string): Promise<boolean> {
   try {
-    const baseUrl = getBaseUrl();
-    const response = await fetch(`${baseUrl}/api/skills/${id}`, {
+    const url = getAbsoluteUrl(`/api/skills/${id}`);
+    const response = await fetch(url, {
       method: 'DELETE',
     });
     
@@ -224,8 +215,8 @@ export async function deleteSkill(id: string): Promise<boolean> {
 // Fetch contact information
 export async function getContactInfo(): Promise<Contact | null> {
   try {
-    const baseUrl = getBaseUrl();
-    const response = await fetch(`${baseUrl}/api/contact`, { 
+    const url = getAbsoluteUrl('/api/contact');
+    const response = await fetch(url, { 
       cache: 'no-store' 
     });
     
@@ -243,8 +234,8 @@ export async function getContactInfo(): Promise<Contact | null> {
 // Update contact information
 export async function updateContactInfo(data: Partial<Contact>): Promise<Contact | null> {
   try {
-    const baseUrl = getBaseUrl();
-    const response = await fetch(`${baseUrl}/api/contact`, {
+    const url = getAbsoluteUrl('/api/contact');
+    const response = await fetch(url, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

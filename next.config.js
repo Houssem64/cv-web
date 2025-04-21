@@ -37,6 +37,10 @@ const nextConfig = {
   distDir: '.next',
   // Prevent issues with react-icons
   transpilePackages: ['react-icons'],
+  // Configure proper URL handling for Vercel
+  assetPrefix: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined,
+  // Help with API URL resolution (updated to use proper Next.js 15.3.1 config)
+
 }
 
 module.exports = nextConfig 

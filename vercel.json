@@ -5,6 +5,9 @@
   "outputDirectory": ".next",
   "regions": ["cdg1"],
   "cleanUrls": true,
+  "env": {
+    "NEXTAUTH_URL": { "development": "http://localhost:3000" }
+  },
   "headers": [
     {
       "source": "/(.*)",

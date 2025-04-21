@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import AdminLayout from '@/components/AdminLayout';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getAboutData, updateAboutData } from '@/lib/api';
+import { getAboutData, updateAboutData, updateContactInfo, getContactInfo } from '@/lib/api';
 import { About } from '@/types/about';
 
 export default function EditAbout() {
@@ -36,7 +36,20 @@ export default function EditAbout() {
       
       try {
         const data = await getAboutData();
+        const contactData = await getContactInfo();
+        
         if (data) {
+          // Merge contactData into formData if available
+          if (contactData) {
+            data.contactInfo = {
+              email: contactData.email || '',
+              phone: contactData.phone || '',
+              location: contactData.location || '',
+              linkedin: contactData.linkedin || '',
+              github: contactData.github || ''
+            };
+          }
+          
           setFormData(data);
           if (data.profileImage) {
             setPreviewImage(data.profileImage);
@@ -367,7 +380,19 @@ export default function EditAbout() {
     setError('');
     
     try {
+      // Update About data
       const result = await updateAboutData(formData);
+      
+      // Update Contact info if it exists in formData
+      if (formData.contactInfo) {
+        await updateContactInfo({
+          email: formData.contactInfo.email,
+          phone: formData.contactInfo.phone,
+          location: formData.contactInfo.location,
+          linkedin: formData.contactInfo.linkedin,
+          github: formData.contactInfo.github
+        });
+      }
       
       if (result) {
         router.push('/admin/dashboard');

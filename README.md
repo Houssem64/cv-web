@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio Website with Admin Panel
+
+A modern portfolio website to showcase your projects, built with Next.js and MongoDB. The site includes a responsive design and an admin panel to manage your project content.
+
+## Features
+
+- **Portfolio Showcase**: Present your projects in a visually appealing way
+- **Admin Panel**: Secure dashboard to add, edit, and delete projects
+- **Responsive Design**: Looks great on all devices (mobile, tablet, desktop)
+- **Modern Stack**: Built with Next.js, Tailwind CSS, MongoDB, and TypeScript
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+ and npm
+- MongoDB connection (local or MongoDB Atlas)
+
+### Installation
+
+1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/yourusername/portfolio-website.git
+cd portfolio-website
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Set up environment variables
+Create a `.env.local` file in the root directory with the following:
+```
+MONGODB_URI=your_mongodb_connection_string
+NEXTAUTH_SECRET=your_nextauth_secret
+ADMIN_EMAIL=your_admin_email@example.com
+ADMIN_PASSWORD=your_admin_password
+NEXTAUTH_URL=http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Run the development server
+```bash
+npm run dev
+```
 
-## Learn More
+5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the site
 
-To learn more about Next.js, take a look at the following resources:
+### Build for Production
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run build
+npm start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Admin Panel
 
-## Deploy on Vercel
+Access the admin panel at `/admin/login`. Use the credentials you specified in your environment variables.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Managing Projects
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+In the admin panel, you can:
+- View all your projects
+- Add new projects
+- Edit existing projects
+- Delete projects
+- Mark projects as featured to display them on the homepage
+
+## Project Structure
+
+```
+/src
+  /app               # Next.js app directory with pages and routes
+    /admin           # Admin panel pages
+    /api             # API routes
+    /projects        # Project pages
+  /components        # Reusable React components
+  /lib               # Utility functions and database connection
+  /models            # Mongoose models
+```
+
+## Customization
+
+### Styling
+
+The website uses Tailwind CSS for styling. You can customize the design by modifying:
+- `tailwind.config.js` - Change colors, fonts, and other theme settings
+- `src/app/globals.css` - Global CSS styles
+
+### Content
+
+Edit the following files to customize your portfolio content:
+- `src/app/page.tsx` - Homepage content
+- `src/app/about/page.tsx` - About page content
+- `src/app/contact/page.tsx` - Contact page content
+
+## License
+
+This project is licensed under the MIT License.

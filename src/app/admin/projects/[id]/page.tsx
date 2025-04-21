@@ -28,7 +28,12 @@ interface Project {
   featured: boolean;
 }
 
-export default function EditProject({ params }: { params: { id: string } }) {
+// Use simple type instead of interface for Next.js 15.3.1 compatibility
+type Props = {
+  params: { id: string }
+}
+
+export default function EditProject({ params }: Props) {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(true);

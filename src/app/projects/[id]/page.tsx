@@ -10,7 +10,12 @@ import ImageGallery from '@/components/ImageGallery';
 // Default placeholder image
 const placeholderImage = '/images/placeholder.jpg';
 
-export default async function ProjectPage({ params }: { params: { id: string } }) {
+// Simple Props type for Next.js 15.3.1 compatibility
+type Props = {
+  params: { id: string }
+}
+
+export default async function ProjectPage({ params }: Props) {
   const project = await getProjectById(params.id);
   
   if (!project) {

@@ -1,10 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { getProjectById } from '@/lib/api';
-import { useState } from 'react';
+import ImageGallery from '@/components/ImageGallery';
 
 // Default placeholder image
 const placeholderImage = '/images/placeholder.jpg';
@@ -23,6 +24,9 @@ export default async function ProjectPage({ params }: { params: { id: string } }
   const validImages = (project.images || [])
     .filter(img => img && img.trim() !== '')
     .map(img => img || placeholderImage);
+  
+  // Include the featured image in the gallery if it's not already included
+  const allGalleryImages = [featuredImage, ...validImages.filter(img => img !== featuredImage)];
 
   return (
     <main className="min-h-screen">
@@ -58,23 +62,13 @@ export default async function ProjectPage({ params }: { params: { id: string } }
             />
           </div>
           
-          {/* Additional Images Gallery */}
-          {validImages.length > 0 && (
+          {/* Image Gallery with Swipe */}
+          {allGalleryImages.length > 0 && (
             <div className="max-w-4xl mx-auto mb-12">
               <h2 className="text-2xl font-bold mb-4">Project Gallery</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {validImages.map((imageUrl, index) => (
-                  <div key={index} className="relative h-64 rounded-lg overflow-hidden shadow">
-                    <Image
-                      src={imageUrl}
-                      alt={`${project.title} - Image ${index + 1}`}
-                      fill
-                      className="object-cover hover:scale-105 transition-transform duration-300"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
-                  </div>
-                ))}
-              </div>
+              <Suspense fallback={<div>Loading gallery...</div>}>
+                <ImageGallery images={allGalleryImages} title={project.title} />
+              </Suspense>
             </div>
           )}
           

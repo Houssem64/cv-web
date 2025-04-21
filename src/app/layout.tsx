@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Portfolio | Professional Work & Projects",
-  description: "A showcase of my professional work, skills and projects",
+  title: "Backend Developer | Java & Spring Boot Specialist",
+  description: "Backend developer specializing in Java, Spring Boot, and building robust APIs and microservices for enterprise applications",
 };
 
 export default function RootLayout({

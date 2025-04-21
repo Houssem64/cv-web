@@ -1,16 +1,21 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import AdminLayout from '@/components/AdminLayout';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function NewProject() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -43,6 +48,54 @@ export default function NewProject() {
       ...formData,
       [name]: checked,
     });
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Preview the selected image
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setPreviewImage(e.target?.result as string);
+    };
+    reader.readAsDataURL(file);
+
+    // Upload the image to R2
+    await uploadImage(file);
+  };
+
+  const uploadImage = async (file: File) => {
+    try {
+      setIsUploading(true);
+      
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to upload image');
+      }
+
+      const data = await response.json();
+      
+      // Update the form with the image URL
+      setFormData(prev => ({
+        ...prev,
+        image: data.url,
+      }));
+      
+      setIsUploading(false);
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      setError(error instanceof Error ? error.message : 'Failed to upload image');
+      setIsUploading(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -90,7 +143,7 @@ export default function NewProject() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#3490dc] mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading...</p>
         </div>
       </div>
@@ -107,7 +160,7 @@ export default function NewProject() {
         <h1 className="text-2xl font-bold">Add New Project</h1>
         <Link
           href="/admin/projects"
-          className="text-primary hover:text-primary/80"
+          className="text-[#3490dc] hover:text-[#3490dc]/80"
         >
           &larr; Back to Projects
         </Link>
@@ -131,7 +184,7 @@ export default function NewProject() {
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#3490dc] focus:border-transparent"
               required
             />
           </div>
@@ -146,7 +199,7 @@ export default function NewProject() {
               name="description"
               value={formData.description}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#3490dc] focus:border-transparent"
               maxLength={500}
               required
             />
@@ -163,27 +216,68 @@ export default function NewProject() {
               value={formData.fullDescription}
               onChange={handleChange}
               rows={8}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#3490dc] focus:border-transparent"
               required
             ></textarea>
             <p className="mt-1 text-xs text-gray-500">Detailed description for the project page. Use blank lines for paragraphs.</p>
           </div>
           
           <div>
-            <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-1">
-              Image URL <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Project Image <span className="text-red-500">*</span>
             </label>
-            <input
-              type="url"
-              id="image"
-              name="image"
-              value={formData.image}
-              onChange={handleChange}
-              placeholder="https://example.com/image.jpg"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              required
-            />
-            <p className="mt-1 text-xs text-gray-500">Direct link to project image (e.g., from Unsplash, Cloudinary, etc.)</p>
+            <div className="mt-1 flex flex-col space-y-4">
+              <div className="flex items-center space-x-4">
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="btn bg-gray-200 text-gray-800 hover:bg-gray-300"
+                  disabled={isUploading}
+                >
+                  {isUploading ? 'Uploading...' : 'Upload Image'}
+                </button>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  className="hidden"
+                  accept="image/*"
+                />
+                {isUploading && (
+                  <div className="flex items-center">
+                    <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-[#3490dc] mr-2"></div>
+                    <span className="text-sm text-gray-500">Uploading...</span>
+                  </div>
+                )}
+              </div>
+              
+              {/* Image Preview */}
+              {previewImage && (
+                <div className="relative w-full h-48 overflow-hidden rounded-md border border-gray-300">
+                  <Image
+                    src={previewImage}
+                    alt="Preview"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              )}
+              
+              {/* Hidden image URL input */}
+              <input
+                type="hidden"
+                id="image"
+                name="image"
+                value={formData.image}
+                required
+              />
+              
+              {formData.image && (
+                <p className="text-xs text-green-600">
+                  ✓ Image uploaded successfully
+                </p>
+              )}
+            </div>
           </div>
           
           <div>
@@ -197,7 +291,7 @@ export default function NewProject() {
               value={formData.tags}
               onChange={handleChange}
               placeholder="React, Next.js, Tailwind CSS"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#3490dc] focus:border-transparent"
               required
             />
             <p className="mt-1 text-xs text-gray-500">Comma-separated list of technologies used</p>
@@ -215,7 +309,7 @@ export default function NewProject() {
                 value={formData.link}
                 onChange={handleChange}
                 placeholder="https://example.com"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#3490dc] focus:border-transparent"
               />
             </div>
             
@@ -230,7 +324,7 @@ export default function NewProject() {
                 value={formData.githubLink}
                 onChange={handleChange}
                 placeholder="https://github.com/username/repo"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#3490dc] focus:border-transparent"
               />
             </div>
           </div>
@@ -242,26 +336,28 @@ export default function NewProject() {
               name="featured"
               checked={formData.featured}
               onChange={handleCheckboxChange}
-              className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+              className="h-4 w-4 text-[#3490dc] focus:ring-[#3490dc] border-gray-300 rounded"
             />
             <label htmlFor="featured" className="ml-2 block text-sm text-gray-700">
               Feature this project on the homepage
             </label>
           </div>
           
-          <div className="flex justify-end space-x-4">
-            <Link
-              href="/admin/projects"
-              className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+          <div className="flex justify-end">
+            <button
+              type="button"
+              onClick={() => router.push('/admin/projects')}
+              className="btn bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 mr-4"
+              disabled={loading}
             >
               Cancel
-            </Link>
+            </button>
             <button
               type="submit"
-              disabled={loading}
-              className="px-4 py-2 border border-transparent rounded-md shadow-sm text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+              className="btn btn-primary"
+              disabled={loading || isUploading}
             >
-              {loading ? 'Saving...' : 'Save Project'}
+              {loading ? 'Saving...' : 'Create Project'}
             </button>
           </div>
         </form>

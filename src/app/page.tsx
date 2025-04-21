@@ -15,31 +15,21 @@ export default async function Home() {
       {/* Hero Section */}
       <section className="pt-16 lg:pt-24 pb-16 bg-gradient-to-br from-[#3490dc]/10 to-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-                Creative Developer & Designer
-              </h1>
-              <p className="text-xl text-gray-600 mb-8">
-                I build beautiful, functional websites and applications that help businesses grow and succeed.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/projects" className="btn btn-primary">
-                  View My Work
-                </Link>
-                <Link href="/contact" className="btn bg-white border border-gray-300 text-gray-700 hover:bg-gray-50">
-                  Contact Me
-                </Link>
-              </div>
-            </div>
-            <div className="relative h-[400px] rounded-lg shadow-xl overflow-hidden">
-              <Image
-                src="https://images.unsplash.com/photo-1604964432806-254d07c11f32?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZGV2ZWxvcGVyfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60"
-                alt="Developer"
-                fill
-                priority
-                className="object-cover"
-              />
+          <div className="flex flex-col items-center text-center">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+              Backend Developer
+            </h1>
+            <p className="text-xl text-gray-600 mb-8 max-w-3xl">
+              I specialize in building robust and scalable backend systems with Java and Spring Boot. 
+              Creating efficient APIs, microservices, and database solutions that power modern applications.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link href="/projects" className="btn btn-primary">
+                View My Work
+              </Link>
+              <Link href="/contact" className="btn bg-white border border-gray-300 text-gray-700 hover:bg-gray-50">
+                Contact Me
+              </Link>
             </div>
           </div>
         </div>
@@ -89,7 +79,7 @@ export default async function Home() {
             <p className="text-gray-600 mt-2">Technologies I work with</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {['JavaScript', 'TypeScript', 'React', 'Next.js', 'Node.js', 'TailwindCSS', 'MongoDB', 'PostgreSQL', 'GraphQL', 'AWS', 'Docker', 'Git'].map((skill) => (
+            {['Java', 'Spring Boot', 'Spring MVC', 'JPA/Hibernate', 'MySQL', 'PostgreSQL', 'RESTful APIs', 'Microservices', 'Docker', 'Git', 'JUnit', 'Maven'].map((skill) => (
               <div key={skill} className="card text-center py-6">
                 <p className="font-medium">{skill}</p>
               </div>
@@ -101,9 +91,9 @@ export default async function Home() {
       {/* Contact CTA Section */}
       <section className="py-16 bg-[#3490dc] text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to start a project?</h2>
+          <h2 className="text-3xl font-bold mb-4">Need a Backend Solution?</h2>
           <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto">
-            Let's discuss your project and see how I can help bring your ideas to life.
+            Let's discuss your requirements for scalable APIs, microservices, or database architecture to power your applications.
           </p>
           <Link href="/contact" className="btn bg-white text-[#3490dc] hover:bg-gray-100">
             Get in Touch

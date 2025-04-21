@@ -165,38 +165,7 @@ export default function ContactPage() {
           </div>
           
           {/* FAQ Section */}
-          <section className="mt-16">
-            <h2 className="text-3xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="card">
-                <h3 className="text-xl font-bold mb-2">What services do you offer?</h3>
-                <p className="text-gray-700">
-                  I offer a range of web development services including frontend development, backend development, full-stack development, custom web applications, e-commerce solutions, and website maintenance.
-                </p>
-              </div>
-              
-              <div className="card">
-                <h3 className="text-xl font-bold mb-2">How much do your services cost?</h3>
-                <p className="text-gray-700">
-                  Each project is unique, so pricing varies based on scope, complexity, and timeline. I provide detailed quotes after an initial consultation to understand your specific requirements.
-                </p>
-              </div>
-              
-              <div className="card">
-                <h3 className="text-xl font-bold mb-2">How long does a typical project take?</h3>
-                <p className="text-gray-700">
-                  Project timelines depend on size and complexity. A simple website might take 2-4 weeks, while a complex web application could take several months. I'll provide a more accurate timeline during our consultation.
-                </p>
-              </div>
-              
-              <div className="card">
-                <h3 className="text-xl font-bold mb-2">Do you offer maintenance after launch?</h3>
-                <p className="text-gray-700">
-                  Yes, I offer ongoing maintenance and support services to ensure your website or application continues to function optimally. This includes regular updates, security patches, and feature enhancements.
-                </p>
-              </div>
-            </div>
-          </section>
+    
         </div>
       </main>
       

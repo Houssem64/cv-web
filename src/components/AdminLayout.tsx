@@ -17,6 +17,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     { name: 'Dashboard', href: '/admin/dashboard' },
     { name: 'Projects', href: '/admin/projects' },
     { name: 'Add Project', href: '/admin/projects/new' },
+    { name: 'About Me', href: '/admin/about' },
   ];
 
   const isActive = (path: string) => {

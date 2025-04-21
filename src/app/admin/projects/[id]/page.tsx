@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import AdminLayout from '@/components/AdminLayout';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Project {
   _id: string;
@@ -24,6 +25,9 @@ export default function EditProject({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -66,6 +70,11 @@ export default function EditProject({ params }: { params: { id: string } }) {
           githubLink: project.githubLink || '',
           featured: project.featured,
         });
+        
+        // Set preview image from existing project image
+        if (project.image) {
+          setPreviewImage(project.image);
+        }
       } catch (error) {
         console.error('Error fetching project:', error);
         setError('Failed to load project data. Please try again.');
@@ -131,6 +140,54 @@ export default function EditProject({ params }: { params: { id: string } }) {
       console.error('Error updating project:', error);
       setError(error instanceof Error ? error.message : 'An error occurred. Please try again.');
       setSubmitting(false);
+    }
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Preview the selected image
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setPreviewImage(e.target?.result as string);
+    };
+    reader.readAsDataURL(file);
+
+    // Upload the image to R2
+    await uploadImage(file);
+  };
+
+  const uploadImage = async (file: File) => {
+    try {
+      setIsUploading(true);
+      
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to upload image');
+      }
+
+      const data = await response.json();
+      
+      // Update the form with the image URL
+      setFormData(prev => ({
+        ...prev,
+        image: data.url,
+      }));
+      
+      setIsUploading(false);
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      setError(error instanceof Error ? error.message : 'Failed to upload image');
+      setIsUploading(false);
     }
   };
 
@@ -218,19 +275,61 @@ export default function EditProject({ params }: { params: { id: string } }) {
           </div>
           
           <div>
-            <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-1">
-              Image URL <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Project Image <span className="text-red-500">*</span>
             </label>
-            <input
-              type="url"
-              id="image"
-              name="image"
-              value={formData.image}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              required
-            />
-            <p className="mt-1 text-xs text-gray-500">Direct link to project image</p>
+            <div className="mt-1 flex flex-col space-y-4">
+              <div className="flex items-center space-x-4">
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="btn bg-gray-200 text-gray-800 hover:bg-gray-300"
+                  disabled={isUploading}
+                >
+                  {isUploading ? 'Uploading...' : 'Upload Image'}
+                </button>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  className="hidden"
+                  accept="image/*"
+                />
+                {isUploading && (
+                  <div className="flex items-center">
+                    <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-[#3490dc] mr-2"></div>
+                    <span className="text-sm text-gray-500">Uploading...</span>
+                  </div>
+                )}
+              </div>
+              
+              {/* Image Preview */}
+              {previewImage && (
+                <div className="relative w-full h-48 overflow-hidden rounded-md border border-gray-300">
+                  <Image
+                    src={previewImage}
+                    alt="Preview"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              )}
+              
+              {/* Hidden image URL input */}
+              <input
+                type="hidden"
+                id="image"
+                name="image"
+                value={formData.image}
+                required
+              />
+              
+              {formData.image && !isUploading && (
+                <p className="text-xs text-green-600">
+                  ✓ Image uploaded successfully
+                </p>
+              )}
+            </div>
           </div>
           
           <div>

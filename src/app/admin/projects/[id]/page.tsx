@@ -7,6 +7,14 @@ import AdminLayout from '@/components/AdminLayout';
 import Link from 'next/link';
 import Image from 'next/image';
 
+// Placeholder image to use when no image URL is available
+const PLACEHOLDER_IMAGE = '/images/placeholder.jpg';
+
+// Helper function to get image src with fallback to placeholder
+const getImageSrc = (src: string | null) => {
+  return src && src.trim().length > 0 ? src : PLACEHOLDER_IMAGE;
+};
+
 interface Project {
   _id: string;
   title: string;
@@ -371,7 +379,7 @@ export default function EditProject({ params }: { params: { id: string } }) {
               {featuredPreview && (
                 <div className="relative w-full h-48 overflow-hidden rounded-md border border-gray-300">
                   <Image
-                    src={featuredPreview}
+                    src={getImageSrc(featuredPreview)}
                     alt="Featured Preview"
                     fill
                     className="object-cover"
@@ -430,7 +438,7 @@ export default function EditProject({ params }: { params: { id: string } }) {
               {additionalPreviews.map((preview, index) => (
                 <div key={index} className="relative w-full h-48 overflow-hidden rounded-md border border-gray-300">
                   <Image
-                    src={preview}
+                    src={getImageSrc(preview)}
                     alt={`Additional Preview ${index + 1}`}
                     fill
                     className="object-cover"

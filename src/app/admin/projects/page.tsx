@@ -7,6 +7,9 @@ import AdminLayout from '@/components/AdminLayout';
 import Link from 'next/link';
 import Image from 'next/image';
 
+// Default placeholder image
+const placeholderImage = '/images/placeholder.jpg';
+
 interface Project {
   _id: string;
   title: string;
@@ -94,6 +97,11 @@ export default function AdminProjects() {
     });
   };
 
+  // Helper function to get valid image URL or placeholder
+  const getImageSrc = (url: string) => {
+    return url && url.trim() !== '' ? url : placeholderImage;
+  };
+
   if (status === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -168,7 +176,7 @@ export default function AdminProjects() {
                     <div className="flex items-center">
                       <div className="h-10 w-10 flex-shrink-0 relative">
                         <Image
-                          src={project.image}
+                          src={getImageSrc(project.image)}
                           alt={project.title}
                           fill
                           className="object-cover rounded"

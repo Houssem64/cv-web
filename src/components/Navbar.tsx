@@ -9,41 +9,34 @@ const Navbar = () => {
   return (
     <nav className="bg-white shadow-sm fixed w-full z-10">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex">
-            <div className="flex-shrink-0 flex items-center">
-              <Link href="/" className="text-xl font-bold text-primary">
-                Portfolio
-              </Link>
-            </div>
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              <Link
-                href="/"
-                className="inline-flex items-center px-1 pt-1 border-b-2 border-primary text-sm font-medium"
-              >
-                Home
-              </Link>
-              <Link
-                href="/projects"
-                className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              >
-                Projects
-              </Link>
-              <Link
-                href="/about"
-                className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              >
-                About
-              </Link>
-              <Link
-                href="/contact"
-                className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              >
-                Contact
-              </Link>
-            </div>
+        <div className="flex justify-center h-16">
+          <div className="hidden sm:flex sm:items-center sm:space-x-8">
+            <Link
+              href="/"
+              className="inline-flex items-center px-1 pt-1 border-b-2 border-primary text-sm font-medium"
+            >
+              Home
+            </Link>
+            <Link
+              href="/projects"
+              className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+            >
+              Projects
+            </Link>
+            <Link
+              href="/about"
+              className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+            >
+              About
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+            >
+              Contact
+            </Link>
           </div>
-          <div className="-mr-2 flex items-center sm:hidden">
+          <div className="flex items-center sm:hidden absolute right-4">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               type="button"

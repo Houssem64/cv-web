@@ -13,11 +13,14 @@ interface ProjectCardProps {
 }
 
 const ProjectCard = ({ id, title, description, image, tags }: ProjectCardProps) => {
+  // Default placeholder image if none provided
+  const imageSrc = image || '/images/placeholder.jpg';
+  
   return (
     <div className="card group hover:scale-[1.01] transition-transform duration-200">
       <div className="relative w-full h-48 mb-4 overflow-hidden rounded-md">
         <Image
-          src={image}
+          src={imageSrc}
           alt={title}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

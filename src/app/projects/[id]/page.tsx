@@ -4,6 +4,10 @@ import { notFound } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { getProjectById } from '@/lib/api';
+import { useState } from 'react';
+
+// Default placeholder image
+const placeholderImage = '/images/placeholder.jpg';
 
 export default async function ProjectPage({ params }: { params: { id: string } }) {
   const project = await getProjectById(params.id);
@@ -11,6 +15,14 @@ export default async function ProjectPage({ params }: { params: { id: string } }
   if (!project) {
     notFound();
   }
+
+  // Ensure we have a valid image URL or use placeholder
+  const featuredImage = project.featuredImage || (project as any).image || placeholderImage;
+  
+  // Filter out empty image URLs and ensure valid ones for the gallery
+  const validImages = (project.images || [])
+    .filter(img => img && img.trim() !== '')
+    .map(img => img || placeholderImage);
 
   return (
     <main className="min-h-screen">
@@ -34,10 +46,10 @@ export default async function ProjectPage({ params }: { params: { id: string } }
             <p className="text-xl text-gray-600 mb-8">{project.description}</p>
           </div>
           
-          {/* Project Image */}
-          <div className="max-w-4xl mx-auto mb-12 relative h-[50vh] min-h-[400px] rounded-lg overflow-hidden shadow-lg">
+          {/* Featured Image */}
+          <div className="max-w-4xl mx-auto mb-8 relative h-[50vh] min-h-[400px] rounded-lg overflow-hidden shadow-lg">
             <Image
-              src={project.image}
+              src={featuredImage}
               alt={project.title}
               fill
               priority
@@ -45,6 +57,26 @@ export default async function ProjectPage({ params }: { params: { id: string } }
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
+          
+          {/* Additional Images Gallery */}
+          {validImages.length > 0 && (
+            <div className="max-w-4xl mx-auto mb-12">
+              <h2 className="text-2xl font-bold mb-4">Project Gallery</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {validImages.map((imageUrl, index) => (
+                  <div key={index} className="relative h-64 rounded-lg overflow-hidden shadow">
+                    <Image
+                      src={imageUrl}
+                      alt={`${project.title} - Image ${index + 1}`}
+                      fill
+                      className="object-cover hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
           
           {/* Project Details */}
           <div className="max-w-4xl mx-auto prose prose-lg">

@@ -3,10 +3,21 @@ import Footer from '@/components/Footer';
 import ProjectCard from '@/components/ProjectCard';
 import { getAllProjects } from '@/lib/api';
 import Link from 'next/link';
+import Image from 'next/image';
+import { Project } from '@/types/project';
 
 export const metadata = {
   title: 'Projects | Portfolio',
   description: 'Browse through my portfolio of projects',
+};
+
+// Default placeholder image
+const placeholderImage = '/images/placeholder.jpg';
+
+const getProjectImageSrc = (project: Project) => {
+  // Handle both new featuredImage and legacy image fields
+  const imageUrl = project.featuredImage || (project as any).image || '';
+  return imageUrl && imageUrl.trim() !== '' ? imageUrl : placeholderImage;
 };
 
 export default async function ProjectsPage() {
@@ -41,7 +52,7 @@ export default async function ProjectsPage() {
                   id={project._id}
                   title={project.title}
                   description={project.description}
-                  image={project.image}
+                  image={getProjectImageSrc(project)}
                   tags={project.tags}
                 />
               ))}

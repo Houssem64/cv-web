@@ -12,7 +12,8 @@ interface Project {
   title: string;
   description: string;
   fullDescription: string;
-  image: string;
+  featuredImage: string;
+  images: string[];
   tags: string[];
   link?: string;
   githubLink?: string;
@@ -26,13 +27,16 @@ export default function EditProject({ params }: { params: { id: string } }) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [isUploading, setIsUploading] = useState(false);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [featuredPreview, setFeaturedPreview] = useState<string | null>(null);
+  const [additionalPreviews, setAdditionalPreviews] = useState<string[]>([]);
+  const featuredInputRef = useRef<HTMLInputElement>(null);
+  const additionalInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     fullDescription: '',
-    image: '',
+    featuredImage: '',
+    images: [] as string[],
     tags: '',
     link: '',
     githubLink: '',
@@ -60,11 +64,17 @@ export default function EditProject({ params }: { params: { id: string } }) {
         
         const project: Project = await response.json();
         
+        // Handle potential legacy projects that use 'image' instead of 'featuredImage'
+        const featuredImg = 'featuredImage' in project ? 
+          project.featuredImage : 
+          (project as any).image || '';
+        
         setFormData({
           title: project.title,
           description: project.description,
           fullDescription: project.fullDescription,
-          image: project.image,
+          featuredImage: featuredImg,
+          images: project.images || [],
           tags: project.tags.join(', '),
           link: project.link || '',
           githubLink: project.githubLink || '',
@@ -72,8 +82,13 @@ export default function EditProject({ params }: { params: { id: string } }) {
         });
         
         // Set preview image from existing project image
-        if (project.image) {
-          setPreviewImage(project.image);
+        if (featuredImg) {
+          setFeaturedPreview(featuredImg);
+        }
+        
+        // Set additional previews
+        if (project.images && project.images.length > 0) {
+          setAdditionalPreviews(project.images);
         }
       } catch (error) {
         console.error('Error fetching project:', error);
@@ -106,7 +121,7 @@ export default function EditProject({ params }: { params: { id: string } }) {
     e.preventDefault();
     
     // Form validation
-    if (!formData.title || !formData.description || !formData.fullDescription || !formData.image || !formData.tags) {
+    if (!formData.title || !formData.description || !formData.fullDescription || !formData.featuredImage || !formData.tags) {
       setError('Please fill in all required fields');
       return;
     }
@@ -143,22 +158,49 @@ export default function EditProject({ params }: { params: { id: string } }) {
     }
   };
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFeaturedImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     // Preview the selected image
     const reader = new FileReader();
     reader.onload = (e) => {
-      setPreviewImage(e.target?.result as string);
+      setFeaturedPreview(e.target?.result as string);
     };
     reader.readAsDataURL(file);
 
     // Upload the image to R2
-    await uploadImage(file);
+    await uploadImage(file, true);
   };
 
-  const uploadImage = async (file: File) => {
+  const handleAdditionalImagesChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    // Convert FileList to array
+    const filesArray = Array.from(files);
+    
+    // Preview the selected images
+    const newPreviews: string[] = [];
+    
+    for (const file of filesArray) {
+      // Create preview for each file
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        newPreviews.push(result);
+        if (newPreviews.length === filesArray.length) {
+          setAdditionalPreviews(prev => [...prev, ...newPreviews]);
+        }
+      };
+      reader.readAsDataURL(file);
+      
+      // Upload each image
+      await uploadImage(file, false);
+    }
+  };
+
+  const uploadImage = async (file: File, isFeatured: boolean) => {
     try {
       setIsUploading(true);
       
@@ -178,10 +220,17 @@ export default function EditProject({ params }: { params: { id: string } }) {
       const data = await response.json();
       
       // Update the form with the image URL
-      setFormData(prev => ({
-        ...prev,
-        image: data.url,
-      }));
+      if (isFeatured) {
+        setFormData(prev => ({
+          ...prev,
+          featuredImage: data.url,
+        }));
+      } else {
+        setFormData(prev => ({
+          ...prev,
+          images: [...prev.images, data.url],
+        }));
+      }
       
       setIsUploading(false);
     } catch (error) {
@@ -189,6 +238,21 @@ export default function EditProject({ params }: { params: { id: string } }) {
       setError(error instanceof Error ? error.message : 'Failed to upload image');
       setIsUploading(false);
     }
+  };
+
+  const removeAdditionalImage = (index: number) => {
+    const newImages = [...formData.images];
+    newImages.splice(index, 1);
+    
+    const newPreviews = [...additionalPreviews];
+    newPreviews.splice(index, 1);
+    
+    setFormData(prev => ({
+      ...prev,
+      images: newImages,
+    }));
+    
+    setAdditionalPreviews(newPreviews);
   };
 
   if (status === 'loading' || loading) {
@@ -276,13 +340,13 @@ export default function EditProject({ params }: { params: { id: string } }) {
           
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Project Image <span className="text-red-500">*</span>
+              Featured Image <span className="text-red-500">*</span>
             </label>
             <div className="mt-1 flex flex-col space-y-4">
               <div className="flex items-center space-x-4">
                 <button
                   type="button"
-                  onClick={() => fileInputRef.current?.click()}
+                  onClick={() => featuredInputRef.current?.click()}
                   className="btn bg-gray-200 text-gray-800 hover:bg-gray-300"
                   disabled={isUploading}
                 >
@@ -290,8 +354,8 @@ export default function EditProject({ params }: { params: { id: string } }) {
                 </button>
                 <input
                   type="file"
-                  ref={fileInputRef}
-                  onChange={handleFileChange}
+                  ref={featuredInputRef}
+                  onChange={handleFeaturedImageChange}
                   className="hidden"
                   accept="image/*"
                 />
@@ -304,11 +368,11 @@ export default function EditProject({ params }: { params: { id: string } }) {
               </div>
               
               {/* Image Preview */}
-              {previewImage && (
+              {featuredPreview && (
                 <div className="relative w-full h-48 overflow-hidden rounded-md border border-gray-300">
                   <Image
-                    src={previewImage}
-                    alt="Preview"
+                    src={featuredPreview}
+                    alt="Featured Preview"
                     fill
                     className="object-cover"
                   />
@@ -318,17 +382,68 @@ export default function EditProject({ params }: { params: { id: string } }) {
               {/* Hidden image URL input */}
               <input
                 type="hidden"
-                id="image"
-                name="image"
-                value={formData.image}
+                id="featuredImage"
+                name="featuredImage"
+                value={formData.featuredImage}
                 required
               />
               
-              {formData.image && !isUploading && (
+              {formData.featuredImage && !isUploading && (
                 <p className="text-xs text-green-600">
                   ✓ Image uploaded successfully
                 </p>
               )}
+            </div>
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Additional Images
+            </label>
+            <div className="mt-1 flex flex-col space-y-4">
+              <div className="flex items-center space-x-4">
+                <button
+                  type="button"
+                  onClick={() => additionalInputRef.current?.click()}
+                  className="btn bg-gray-200 text-gray-800 hover:bg-gray-300"
+                  disabled={isUploading}
+                >
+                  {isUploading ? 'Uploading...' : 'Upload Images'}
+                </button>
+                <input
+                  type="file"
+                  ref={additionalInputRef}
+                  onChange={handleAdditionalImagesChange}
+                  className="hidden"
+                  accept="image/*"
+                  multiple
+                />
+                {isUploading && (
+                  <div className="flex items-center">
+                    <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-[#3490dc] mr-2"></div>
+                    <span className="text-sm text-gray-500">Uploading...</span>
+                  </div>
+                )}
+              </div>
+              
+              {/* Image Previews */}
+              {additionalPreviews.map((preview, index) => (
+                <div key={index} className="relative w-full h-48 overflow-hidden rounded-md border border-gray-300">
+                  <Image
+                    src={preview}
+                    alt={`Additional Preview ${index + 1}`}
+                    fill
+                    className="object-cover"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeAdditionalImage(index)}
+                    className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
             </div>
           </div>
           

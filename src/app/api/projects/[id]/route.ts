@@ -62,6 +62,11 @@ export async function PUT(
       );
     }
 
+    // Remove any 'image' property if it exists
+    if ('image' in body) {
+      delete body.image;
+    }
+
     // Update project
     const updatedProject = await Project.findByIdAndUpdate(
       projectId,

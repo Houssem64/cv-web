@@ -13,14 +13,17 @@ export default function NewProject() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [isUploading, setIsUploading] = useState(false);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [featuredPreview, setFeaturedPreview] = useState<string | null>(null);
+  const [additionalPreviews, setAdditionalPreviews] = useState<string[]>([]);
+  const featuredInputRef = useRef<HTMLInputElement>(null);
+  const additionalInputRef = useRef<HTMLInputElement>(null);
   
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     fullDescription: '',
-    image: '',
+    featuredImage: '',
+    images: [] as string[],
     tags: '',
     link: '',
     githubLink: '',
@@ -50,22 +53,49 @@ export default function NewProject() {
     });
   };
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFeaturedImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     // Preview the selected image
     const reader = new FileReader();
     reader.onload = (e) => {
-      setPreviewImage(e.target?.result as string);
+      setFeaturedPreview(e.target?.result as string);
     };
     reader.readAsDataURL(file);
 
     // Upload the image to R2
-    await uploadImage(file);
+    await uploadImage(file, true);
   };
 
-  const uploadImage = async (file: File) => {
+  const handleAdditionalImagesChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    // Convert FileList to array
+    const filesArray = Array.from(files);
+    
+    // Preview the selected images
+    const newPreviews: string[] = [];
+    
+    for (const file of filesArray) {
+      // Create preview for each file
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        newPreviews.push(result);
+        if (newPreviews.length === filesArray.length) {
+          setAdditionalPreviews(prev => [...prev, ...newPreviews]);
+        }
+      };
+      reader.readAsDataURL(file);
+      
+      // Upload each image
+      await uploadImage(file, false);
+    }
+  };
+
+  const uploadImage = async (file: File, isFeatured: boolean) => {
     try {
       setIsUploading(true);
       
@@ -85,10 +115,17 @@ export default function NewProject() {
       const data = await response.json();
       
       // Update the form with the image URL
-      setFormData(prev => ({
-        ...prev,
-        image: data.url,
-      }));
+      if (isFeatured) {
+        setFormData(prev => ({
+          ...prev,
+          featuredImage: data.url,
+        }));
+      } else {
+        setFormData(prev => ({
+          ...prev,
+          images: [...prev.images, data.url],
+        }));
+      }
       
       setIsUploading(false);
     } catch (error) {
@@ -98,11 +135,26 @@ export default function NewProject() {
     }
   };
 
+  const removeAdditionalImage = (index: number) => {
+    const newImages = [...formData.images];
+    newImages.splice(index, 1);
+    
+    const newPreviews = [...additionalPreviews];
+    newPreviews.splice(index, 1);
+    
+    setFormData(prev => ({
+      ...prev,
+      images: newImages,
+    }));
+    
+    setAdditionalPreviews(newPreviews);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Form validation
-    if (!formData.title || !formData.description || !formData.fullDescription || !formData.image || !formData.tags) {
+    if (!formData.title || !formData.description || !formData.fullDescription || !formData.featuredImage || !formData.tags) {
       setError('Please fill in all required fields');
       return;
     }
@@ -174,6 +226,7 @@ export default function NewProject() {
       
       <div className="bg-white rounded-lg shadow p-6">
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Project Title */}
           <div>
             <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
               Title <span className="text-red-500">*</span>
@@ -189,6 +242,7 @@ export default function NewProject() {
             />
           </div>
           
+          {/* Short Description */}
           <div>
             <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
               Short Description <span className="text-red-500">*</span>
@@ -200,12 +254,13 @@ export default function NewProject() {
               value={formData.description}
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#3490dc] focus:border-transparent"
-              maxLength={500}
               required
+              maxLength={500}
             />
-            <p className="mt-1 text-xs text-gray-500">Brief description for project cards (max 500 characters)</p>
+            <p className="mt-1 text-sm text-gray-500">Max 500 characters</p>
           </div>
           
+          {/* Full Description */}
           <div>
             <label htmlFor="fullDescription" className="block text-sm font-medium text-gray-700 mb-1">
               Full Description <span className="text-red-500">*</span>
@@ -215,31 +270,31 @@ export default function NewProject() {
               name="fullDescription"
               value={formData.fullDescription}
               onChange={handleChange}
-              rows={8}
+              rows={6}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#3490dc] focus:border-transparent"
               required
             ></textarea>
-            <p className="mt-1 text-xs text-gray-500">Detailed description for the project page. Use blank lines for paragraphs.</p>
           </div>
           
+          {/* Featured Image Upload */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Project Image <span className="text-red-500">*</span>
+              Featured Image <span className="text-red-500">*</span>
             </label>
             <div className="mt-1 flex flex-col space-y-4">
               <div className="flex items-center space-x-4">
                 <button
                   type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  className="btn bg-gray-200 text-gray-800 hover:bg-gray-300"
+                  onClick={() => featuredInputRef.current?.click()}
+                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300"
                   disabled={isUploading}
                 >
-                  {isUploading ? 'Uploading...' : 'Upload Image'}
+                  {isUploading ? 'Uploading...' : 'Upload Featured Image'}
                 </button>
                 <input
                   type="file"
-                  ref={fileInputRef}
-                  onChange={handleFileChange}
+                  ref={featuredInputRef}
+                  onChange={handleFeaturedImageChange}
                   className="hidden"
                   accept="image/*"
                 />
@@ -251,12 +306,12 @@ export default function NewProject() {
                 )}
               </div>
               
-              {/* Image Preview */}
-              {previewImage && (
+              {/* Featured Image Preview */}
+              {featuredPreview && (
                 <div className="relative w-full h-48 overflow-hidden rounded-md border border-gray-300">
                   <Image
-                    src={previewImage}
-                    alt="Preview"
+                    src={featuredPreview}
+                    alt="Featured Preview"
                     fill
                     className="object-cover"
                   />
@@ -266,20 +321,67 @@ export default function NewProject() {
               {/* Hidden image URL input */}
               <input
                 type="hidden"
-                id="image"
-                name="image"
-                value={formData.image}
+                id="featuredImage"
+                name="featuredImage"
+                value={formData.featuredImage}
                 required
               />
+            </div>
+          </div>
+          
+          {/* Additional Images Upload */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Additional Images
+            </label>
+            <div className="mt-1 flex flex-col space-y-4">
+              <div className="flex items-center space-x-4">
+                <button
+                  type="button"
+                  onClick={() => additionalInputRef.current?.click()}
+                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300"
+                  disabled={isUploading}
+                >
+                  {isUploading ? 'Uploading...' : 'Upload Additional Images'}
+                </button>
+                <input
+                  type="file"
+                  ref={additionalInputRef}
+                  onChange={handleAdditionalImagesChange}
+                  className="hidden"
+                  accept="image/*"
+                  multiple
+                />
+              </div>
               
-              {formData.image && (
-                <p className="text-xs text-green-600">
-                  ✓ Image uploaded successfully
-                </p>
+              {/* Additional Images Preview */}
+              {additionalPreviews.length > 0 && (
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
+                  {additionalPreviews.map((preview, index) => (
+                    <div key={index} className="relative group">
+                      <div className="relative w-full h-32 overflow-hidden rounded-md border border-gray-300">
+                        <Image
+                          src={preview}
+                          alt={`Additional Image ${index + 1}`}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeAdditionalImage(index)}
+                        className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        &times;
+                      </button>
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
           </div>
           
+          {/* Tags */}
           <div>
             <label htmlFor="tags" className="block text-sm font-medium text-gray-700 mb-1">
               Tags <span className="text-red-500">*</span>
@@ -290,14 +392,15 @@ export default function NewProject() {
               name="tags"
               value={formData.tags}
               onChange={handleChange}
-              placeholder="React, Next.js, Tailwind CSS"
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#3490dc] focus:border-transparent"
+              placeholder="e.g. React, Next.js, TailwindCSS"
               required
             />
-            <p className="mt-1 text-xs text-gray-500">Comma-separated list of technologies used</p>
+            <p className="mt-1 text-sm text-gray-500">Comma separated list of tags</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Project Links */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label htmlFor="link" className="block text-sm font-medium text-gray-700 mb-1">
                 Live Demo URL
@@ -308,14 +411,14 @@ export default function NewProject() {
                 name="link"
                 value={formData.link}
                 onChange={handleChange}
-                placeholder="https://example.com"
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#3490dc] focus:border-transparent"
+                placeholder="https://example.com"
               />
             </div>
             
             <div>
               <label htmlFor="githubLink" className="block text-sm font-medium text-gray-700 mb-1">
-                GitHub URL
+                GitHub Repository URL
               </label>
               <input
                 type="url"
@@ -323,12 +426,13 @@ export default function NewProject() {
                 name="githubLink"
                 value={formData.githubLink}
                 onChange={handleChange}
-                placeholder="https://github.com/username/repo"
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#3490dc] focus:border-transparent"
+                placeholder="https://github.com/username/repo"
               />
             </div>
           </div>
           
+          {/* Featured Checkbox */}
           <div className="flex items-center">
             <input
               type="checkbox"
@@ -343,21 +447,14 @@ export default function NewProject() {
             </label>
           </div>
           
+          {/* Submit Button */}
           <div className="flex justify-end">
             <button
-              type="button"
-              onClick={() => router.push('/admin/projects')}
-              className="btn bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 mr-4"
-              disabled={loading}
-            >
-              Cancel
-            </button>
-            <button
               type="submit"
-              className="btn btn-primary"
               disabled={loading || isUploading}
+              className="px-4 py-2 bg-[#3490dc] text-white rounded-md hover:bg-[#3490dc]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3490dc] disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Saving...' : 'Create Project'}
+              {loading ? 'Creating...' : 'Create Project'}
             </button>
           </div>
         </form>

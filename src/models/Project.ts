@@ -4,7 +4,9 @@ export interface IProject extends Document {
   title: string;
   description: string;
   fullDescription: string;
-  image: string;
+  featuredImage: string;
+  image?: string; // Keep for backward compatibility
+  images: string[];
   tags: string[];
   link?: string;
   githubLink?: string;
@@ -13,6 +15,7 @@ export interface IProject extends Document {
   updatedAt: Date;
 }
 
+// Create a schema that doesn't include 'image' at all, to avoid validation rules
 const ProjectSchema: Schema = new Schema(
   {
     title: {
@@ -32,9 +35,13 @@ const ProjectSchema: Schema = new Schema(
       required: [true, 'Please provide a full description for the project'],
       trim: true,
     },
-    image: {
+    featuredImage: {
       type: String,
-      required: [true, 'Please provide an image for the project'],
+      required: [true, 'Please provide a featured image for the project'],
+    },
+    images: {
+      type: [String],
+      default: [],
     },
     tags: {
       type: [String],
@@ -62,4 +69,9 @@ const ProjectSchema: Schema = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.models.Project || mongoose.model<IProject>('Project', ProjectSchema); 
+// Remove any collection to force a rebuild
+if (mongoose.models.Project) {
+  delete mongoose.models.Project;
+}
+
+export default mongoose.model<IProject>('Project', ProjectSchema); 

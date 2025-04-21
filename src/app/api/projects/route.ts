@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     
     // Validate required fields
-    const requiredFields = ['title', 'description', 'fullDescription', 'image', 'tags'];
+    const requiredFields = ['title', 'description', 'fullDescription', 'featuredImage', 'tags'];
     for (const field of requiredFields) {
       if (!body[field]) {
         return NextResponse.json(
@@ -53,6 +53,11 @@ export async function POST(req: NextRequest) {
           { status: 400 }
         );
       }
+    }
+    
+    // Delete any 'image' property if it exists to prevent validation errors
+    if ('image' in body) {
+      delete body.image;
     }
     
     // Create new project

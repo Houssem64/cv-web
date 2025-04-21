@@ -20,9 +20,18 @@ const getImageSrc = (imageUrl: string | undefined): string => {
 
 // Force dynamic rendering for this page
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function ProjectsPage() {
-  const projects = await getAllProjects();
+  let projects: Project[] = [];
+  let projectsError: string | null = null;
+  
+  try {
+    projects = await getAllProjects();
+  } catch (error) {
+    console.error('Error in projects page:', error);
+    projectsError = 'Failed to load projects';
+  }
 
   return (
     <main className="min-h-screen">
@@ -37,7 +46,15 @@ export default async function ProjectsPage() {
             </p>
           </div>
 
-          {projects.length === 0 ? (
+          {projectsError ? (
+            <div className="bg-white rounded-lg shadow p-8 text-center">
+              <p className="text-red-600 mb-4">{projectsError}</p>
+              <p className="text-gray-500 mb-6">There might be an issue with the database connection.</p>
+              <Link href="/" className="btn btn-primary">
+                Return Home
+              </Link>
+            </div>
+          ) : projects.length === 0 ? (
             <div className="bg-white rounded-lg shadow p-8 text-center">
               <p className="text-gray-600 mb-4">No projects found.</p>
               <p className="text-gray-500 mb-6">Projects will appear here once they're added from the admin panel.</p>

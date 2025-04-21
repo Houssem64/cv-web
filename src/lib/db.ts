@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 const MONGODB_URI = process.env.MONGODB_URI || '';
 
 if (!MONGODB_URI) {
+  console.error('MONGODB_URI environment variable is not defined');
   throw new Error(
     'Please define the MONGODB_URI environment variable'
   );
@@ -26,14 +27,30 @@ async function dbConnect() {
       bufferCommands: false,
     };
 
-    globalMongoose.promise = mongoose.connect(MONGODB_URI, opts)
-      .then((mongoose) => {
-        return mongoose.connection;
-      });
+    try {
+      console.log('Connecting to MongoDB...');
+      globalMongoose.promise = mongoose.connect(MONGODB_URI, opts)
+        .then((mongoose) => {
+          console.log('MongoDB connected successfully');
+          return mongoose.connection;
+        })
+        .catch(err => {
+          console.error('MongoDB connection error:', err);
+          throw err;
+        });
+    } catch (error) {
+      console.error('Error setting up MongoDB connection:', error);
+      throw error;
+    }
   }
   
-  globalMongoose.conn = await globalMongoose.promise;
-  return globalMongoose.conn;
+  try {
+    globalMongoose.conn = await globalMongoose.promise;
+    return globalMongoose.conn;
+  } catch (error) {
+    console.error('Error awaiting MongoDB connection:', error);
+    throw error;
+  }
 }
 
 export default dbConnect; 

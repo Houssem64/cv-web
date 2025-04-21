@@ -5,6 +5,10 @@ import { Contact } from '../types/contact';
 
 // Helper function to get the base URL
 function getBaseUrl() {
+  // For API routes, we can use relative URLs which will work in all environments
+  return '';
+  
+  /* Original implementation that causes issues on Vercel:
   // Check if we're running on the server
   if (typeof window === 'undefined') {
     // Server-side - use environment variable or default to localhost
@@ -12,6 +16,7 @@ function getBaseUrl() {
   }
   // Client-side - use the window location
   return window.location.origin;
+  */
 }
 
 // Fetch all projects

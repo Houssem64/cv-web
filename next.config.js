@@ -16,15 +16,15 @@ const nextConfig = {
   images: {
     // Use remotePatterns instead of domains (domains is deprecated)
     remotePatterns: [
-        {
-          protocol: 'https',
-          hostname: 'pub-bcf3e2d9951546dba4e2c5284f49e9d9.r2.dev',
-        },
+      {
+        protocol: 'https',
+        hostname: 'pub-bcf3e2d9951546dba4e2c5284f49e9d9.r2.dev',
+      },
        
-        {
-          protocol: 'https',
-          hostname: 'images.unsplash.com',
-        },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
       {
         protocol: 'https',
         hostname: '**.r2.dev',
@@ -39,8 +39,6 @@ const nextConfig = {
   transpilePackages: ['react-icons'],
   // Configure proper URL handling for Vercel
   assetPrefix: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined,
-  // Help with API URL resolution (updated to use proper Next.js 15.3.1 config)
-
 }
 
 module.exports = nextConfig 

@@ -15,6 +15,9 @@ type Props = {
   params: { id: string }
 }
 
+// Force dynamic rendering for this page
+export const dynamic = 'force-dynamic';
+
 export default async function ProjectPage({ params }: Props) {
   // Fix for Next.js 15.3.1 requirement to await params
   const resolvedParams = await Promise.resolve(params);

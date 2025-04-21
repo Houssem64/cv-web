@@ -1,8 +1,8 @@
+import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ProjectCard from '@/components/ProjectCard';
 import { getAllProjects } from '@/lib/api';
-import Link from 'next/link';
 import Image from 'next/image';
 import { Project } from '@/types/project';
 
@@ -14,11 +14,12 @@ export const metadata = {
 // Default placeholder image
 const placeholderImage = '/images/placeholder.jpg';
 
-const getProjectImageSrc = (project: Project) => {
-  // Handle both new featuredImage and legacy image fields
-  const imageUrl = project.featuredImage || (project as any).image || '';
+const getImageSrc = (imageUrl: string | undefined): string => {
   return imageUrl && imageUrl.trim() !== '' ? imageUrl : placeholderImage;
 };
+
+// Force dynamic rendering for this page
+export const dynamic = 'force-dynamic';
 
 export default async function ProjectsPage() {
   const projects = await getAllProjects();
@@ -52,7 +53,7 @@ export default async function ProjectsPage() {
                   id={project._id}
                   title={project.title}
                   description={project.description}
-                  image={getProjectImageSrc(project)}
+                  image={getImageSrc(project.featuredImage)}
                   tags={project.tags}
                 />
               ))}

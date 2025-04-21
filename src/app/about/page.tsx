@@ -1,8 +1,12 @@
 import Image from 'next/image';
-import Navbar from '../../components/Navbar';
-import Footer from '../../components/Footer';
+import Link from 'next/link';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import { getAboutData } from '@/lib/api';
 import { About } from '@/types/about';
+
+// Force dynamic rendering for this page
+export const dynamic = 'force-dynamic';
 
 export default async function AboutPage() {
   const aboutData = await getAboutData();

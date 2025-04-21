@@ -5,6 +5,9 @@ import Footer from '../components/Footer';
 import ProjectCard from '../components/ProjectCard';
 import { getFeaturedProjects, getAllSkills } from '../lib/api';
 
+// Force dynamic rendering for this page
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   const featuredProjects = await getFeaturedProjects();
   const skills = await getAllSkills();
@@ -58,7 +61,7 @@ export default async function Home() {
                   id={project._id}
                   title={project.title}
                   description={project.description}
-                  image={project.image}
+                  image={project.featuredImage}
                   tags={project.tags}
                 />
               ))}

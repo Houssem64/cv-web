@@ -4,13 +4,32 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ProjectCard from '../components/ProjectCard';
 import { getFeaturedProjects, getAllSkills } from '../lib/api';
+import { Project } from '../types/project';
+import { Skill } from '../types/skill';
 
 // Force dynamic rendering for this page
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function Home() {
-  const featuredProjects = await getFeaturedProjects();
-  const skills = await getAllSkills();
+  let featuredProjects: Project[] = [];
+  let skills: Skill[] = [];
+  let projectsError: string | null = null;
+  let skillsError: string | null = null;
+  
+  try {
+    featuredProjects = await getFeaturedProjects();
+  } catch (error) {
+    console.error('Error in page component:', error);
+    projectsError = 'Failed to load projects';
+  }
+  
+  try {
+    skills = await getAllSkills();
+  } catch (error) {
+    console.error('Error in page component:', error);
+    skillsError = 'Failed to load skills';
+  }
   
   return (
     <main className="min-h-screen">
@@ -46,7 +65,16 @@ export default async function Home() {
             <h2 className="text-3xl font-bold">Featured Projects</h2>
             <p className="text-gray-600 mt-2">Some of my recent work</p>
           </div>
-          {featuredProjects.length === 0 ? (
+          
+          {projectsError ? (
+            <div className="text-center p-8 bg-gray-50 rounded-lg">
+              <p className="text-red-600">{projectsError}</p>
+              <p className="text-gray-600 mt-2">There might be an issue with the database connection.</p>
+              <Link href="/admin/login" className="btn btn-primary mt-4">
+                Try Admin Login
+              </Link>
+            </div>
+          ) : featuredProjects.length === 0 ? (
             <div className="text-center p-8 bg-gray-50 rounded-lg">
               <p className="text-gray-600">No projects found. Add some projects from the admin panel.</p>
               <Link href="/admin/login" className="btn btn-primary mt-4">
@@ -67,6 +95,7 @@ export default async function Home() {
               ))}
             </div>
           )}
+          
           <div className="text-center mt-12">
             <Link href="/projects" className="btn btn-primary">
               View All Projects
@@ -82,22 +111,30 @@ export default async function Home() {
             <h2 className="text-3xl font-bold">Skills</h2>
             <p className="text-gray-600 mt-2">Technologies I work with</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {skills && skills.length > 0 ? 
-              skills.map(skill => (
-                <div key={skill._id} className="card text-center py-6">
-                  <p className="font-medium">{skill.name}</p>
-                  {skill.category !== 'Uncategorized' && (
-                    <span className="text-sm text-gray-500 mt-1 block">{skill.category}</span>
-                  )}
+          
+          {skillsError ? (
+            <div className="text-center p-8 bg-white rounded-lg shadow-sm">
+              <p className="text-red-600">{skillsError}</p>
+              <p className="text-gray-600 mt-2">There might be an issue with the database connection.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {skills && skills.length > 0 ? 
+                skills.map(skill => (
+                  <div key={skill._id} className="card text-center py-6">
+                    <p className="font-medium">{skill.name}</p>
+                    {skill.category !== 'Uncategorized' && (
+                      <span className="text-sm text-gray-500 mt-1 block">{skill.category}</span>
+                    )}
+                  </div>
+                ))
+              : 
+                <div className="col-span-full text-center py-6">
+                  <p>Skills data is currently unavailable.</p>
                 </div>
-              ))
-            : 
-              <div className="col-span-full text-center py-6">
-                <p>Skills data is currently unavailable.</p>
-              </div>
-            }
-          </div>
+              }
+            </div>
+          )}
         </div>
       </section>
 

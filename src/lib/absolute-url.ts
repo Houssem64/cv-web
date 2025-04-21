@@ -11,14 +11,14 @@ export function getAbsoluteUrl(path: string = ''): string {
     return `https://${process.env.VERCEL_URL}${normalizePath}`;
   }
 
+  // For client-side requests in production, just use relative URLs
+  if (typeof window !== 'undefined') {
+    return normalizePath;
+  }
+
   // In local development, use the NEXTAUTH_URL or localhost
   if (process.env.NEXTAUTH_URL) {
     return `${process.env.NEXTAUTH_URL}${normalizePath}`;
-  }
-
-  // Fallback for client-side
-  if (typeof window !== 'undefined') {
-    return `${window.location.origin}${normalizePath}`;
   }
 
   // Final fallback for server-side in non-Vercel environments
@@ -26,6 +26,6 @@ export function getAbsoluteUrl(path: string = ''): string {
     return `http://localhost:3000${normalizePath}`;
   }
 
-  // For other deployment platforms, try to use the host header
+  // For other deployment platforms, just use the path
   return normalizePath;
 } 

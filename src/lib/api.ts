@@ -34,17 +34,20 @@ export async function getFeaturedProjects(): Promise<Project[]> {
   try {
     const url = getAbsoluteUrl('/api/projects?featured=true');
     const response = await fetch(url, { 
-      cache: 'no-store' 
+      cache: 'no-store',
+      next: { revalidate: 0 }
     });
     
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Server response:', errorText);
       throw new Error('Failed to fetch featured projects');
     }
     
     return response.json();
   } catch (error) {
     console.error('Error fetching featured projects:', error);
-    return [];
+    throw error; // Re-throw to handle in the component
   }
 }
 
@@ -133,17 +136,20 @@ export async function getAllSkills(): Promise<Skill[]> {
   try {
     const url = getAbsoluteUrl('/api/skills');
     const response = await fetch(url, { 
-      cache: 'no-store' 
+      cache: 'no-store',
+      next: { revalidate: 0 }
     });
     
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Server response:', errorText);
       throw new Error('Failed to fetch skills');
     }
     
     return response.json();
   } catch (error) {
     console.error('Error fetching skills:', error);
-    return [];
+    throw error; // Re-throw to handle in the component
   }
 }
 

@@ -11,7 +11,11 @@ export async function GET(
   try {
     await dbConnect();
     
-    const skill = await Skill.findById(params.id);
+    // Fix for Next.js 15.3.1 requirement to await params
+    const resolvedParams = await Promise.resolve(params);
+    const skillId = resolvedParams.id;
+    
+    const skill = await Skill.findById(skillId);
     
     if (!skill) {
       return NextResponse.json(
@@ -22,7 +26,9 @@ export async function GET(
     
     return NextResponse.json(skill, { status: 200 });
   } catch (error) {
-    console.error(`Error fetching skill with ID ${params.id}:`, error);
+    // Fix for Next.js 15.3.1 requirement to await params
+    const resolvedParams = await Promise.resolve(params);
+    console.error(`Error fetching skill with ID ${resolvedParams.id}:`, error);
     return NextResponse.json(
       { error: 'Failed to fetch skill' },
       { status: 500 }
@@ -48,6 +54,10 @@ export async function PUT(
     
     await dbConnect();
     
+    // Fix for Next.js 15.3.1 requirement to await params
+    const resolvedParams = await Promise.resolve(params);
+    const skillId = resolvedParams.id;
+    
     const body = await req.json();
     
     if (!body.name) {
@@ -58,7 +68,7 @@ export async function PUT(
     }
     
     const skill = await Skill.findByIdAndUpdate(
-      params.id,
+      skillId,
       body,
       { new: true, runValidators: true }
     );
@@ -72,7 +82,9 @@ export async function PUT(
     
     return NextResponse.json(skill, { status: 200 });
   } catch (error) {
-    console.error(`Error updating skill with ID ${params.id}:`, error);
+    // Fix for Next.js 15.3.1 requirement to await params
+    const resolvedParams = await Promise.resolve(params);
+    console.error(`Error updating skill with ID ${resolvedParams.id}:`, error);
     return NextResponse.json(
       { error: 'Failed to update skill' },
       { status: 500 }
@@ -98,7 +110,11 @@ export async function DELETE(
     
     await dbConnect();
     
-    const skill = await Skill.findByIdAndDelete(params.id);
+    // Fix for Next.js 15.3.1 requirement to await params
+    const resolvedParams = await Promise.resolve(params);
+    const skillId = resolvedParams.id;
+    
+    const skill = await Skill.findByIdAndDelete(skillId);
     
     if (!skill) {
       return NextResponse.json(
@@ -109,7 +125,9 @@ export async function DELETE(
     
     return NextResponse.json({ message: 'Skill deleted successfully' }, { status: 200 });
   } catch (error) {
-    console.error(`Error deleting skill with ID ${params.id}:`, error);
+    // Fix for Next.js 15.3.1 requirement to await params
+    const resolvedParams = await Promise.resolve(params);
+    console.error(`Error deleting skill with ID ${resolvedParams.id}:`, error);
     return NextResponse.json(
       { error: 'Failed to delete skill' },
       { status: 500 }

@@ -11,7 +11,9 @@ export async function GET(
   try {
     await dbConnect();
 
-    const projectId = params.id;
+    // Fix for Next.js 15.3.1 requirement to await params
+    const resolvedParams = await Promise.resolve(params);
+    const projectId = resolvedParams.id;
     const project = await Project.findById(projectId);
 
     if (!project) {
@@ -49,7 +51,9 @@ export async function PUT(
 
     await dbConnect();
 
-    const projectId = params.id;
+    // Fix for Next.js 15.3.1 requirement to await params
+    const resolvedParams = await Promise.resolve(params);
+    const projectId = resolvedParams.id;
     const body = await req.json();
 
     // Check if project exists
@@ -102,7 +106,9 @@ export async function DELETE(
 
     await dbConnect();
 
-    const projectId = params.id;
+    // Fix for Next.js 15.3.1 requirement to await params
+    const resolvedParams = await Promise.resolve(params);
+    const projectId = resolvedParams.id;
     
     // Check if project exists
     const existingProject = await Project.findById(projectId);

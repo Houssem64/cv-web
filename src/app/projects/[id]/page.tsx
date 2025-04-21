@@ -16,7 +16,9 @@ type Props = {
 }
 
 export default async function ProjectPage({ params }: Props) {
-  const project = await getProjectById(params.id);
+  // Fix for Next.js 15.3.1 requirement to await params
+  const resolvedParams = await Promise.resolve(params);
+  const project = await getProjectById(resolvedParams.id);
   
   if (!project) {
     notFound();

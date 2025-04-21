@@ -55,6 +55,18 @@ export default function EditProject({ params }: Props) {
     githubLink: '',
     featured: false,
   });
+  
+  // Store resolved params ID
+  const [projectId, setProjectId] = useState<string | null>(null);
+
+  // Resolve params
+  useEffect(() => {
+    const resolveParams = async () => {
+      const resolvedParams = await Promise.resolve(params);
+      setProjectId(resolvedParams.id);
+    };
+    resolveParams();
+  }, [params]);
 
   // Check if user is authenticated
   useEffect(() => {
@@ -66,10 +78,10 @@ export default function EditProject({ params }: Props) {
   // Fetch project data
   useEffect(() => {
     const fetchProject = async () => {
-      if (status !== 'authenticated') return;
+      if (status !== 'authenticated' || !projectId) return;
       
       try {
-        const response = await fetch(`/api/projects/${params.id}`);
+        const response = await fetch(`/api/projects/${projectId}`);
         
         if (!response.ok) {
           throw new Error('Failed to fetch project');
@@ -112,7 +124,7 @@ export default function EditProject({ params }: Props) {
     };
 
     fetchProject();
-  }, [params.id, status]);
+  }, [projectId, status]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -133,6 +145,8 @@ export default function EditProject({ params }: Props) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    if (!projectId) return;
+    
     // Form validation
     if (!formData.title || !formData.description || !formData.fullDescription || !formData.featuredImage || !formData.tags) {
       setError('Please fill in all required fields');
@@ -146,7 +160,7 @@ export default function EditProject({ params }: Props) {
     const tagsArray = formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag !== '');
     
     try {
-      const response = await fetch(`/api/projects/${params.id}`, {
+      const response = await fetch(`/api/projects/${projectId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

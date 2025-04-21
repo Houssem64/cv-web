@@ -3,10 +3,11 @@ import Link from 'next/link';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ProjectCard from '../components/ProjectCard';
-import { getFeaturedProjects } from '../lib/api';
+import { getFeaturedProjects, getAllSkills } from '../lib/api';
 
 export default async function Home() {
   const featuredProjects = await getFeaturedProjects();
+  const skills = await getAllSkills();
   
   return (
     <main className="min-h-screen">
@@ -75,15 +76,24 @@ export default async function Home() {
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold">Skills & Expertise</h2>
+            <h2 className="text-3xl font-bold">Skills</h2>
             <p className="text-gray-600 mt-2">Technologies I work with</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {['Java', 'Spring Boot', 'Spring MVC', 'JPA/Hibernate', 'MySQL', 'PostgreSQL', 'RESTful APIs', 'Microservices', 'Docker', 'Git', 'JUnit', 'Maven'].map((skill) => (
-              <div key={skill} className="card text-center py-6">
-                <p className="font-medium">{skill}</p>
+            {skills && skills.length > 0 ? 
+              skills.map(skill => (
+                <div key={skill._id} className="card text-center py-6">
+                  <p className="font-medium">{skill.name}</p>
+                  {skill.category !== 'Uncategorized' && (
+                    <span className="text-sm text-gray-500 mt-1 block">{skill.category}</span>
+                  )}
+                </div>
+              ))
+            : 
+              <div className="col-span-full text-center py-6">
+                <p>Skills data is currently unavailable.</p>
               </div>
-            ))}
+            }
           </div>
         </div>
       </section>

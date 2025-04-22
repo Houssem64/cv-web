@@ -21,5 +21,12 @@ export async function GET(req: NextRequest) {
     diagnosticInfo.mongodb = `connection error: ${error instanceof Error ? error.message : String(error)}`;
   }
 
-  return NextResponse.json(diagnosticInfo, { status: 200 });
-} 
+  const response = NextResponse.json(diagnosticInfo, { status: 200 });
+
+  // Add CORS headers
+  response.headers.set('Access-Control-Allow-Origin', '*');
+  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  return response;
+}

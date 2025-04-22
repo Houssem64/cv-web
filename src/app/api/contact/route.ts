@@ -19,7 +19,11 @@ export async function GET(req: NextRequest) {
     if (!contactData) {
       contactData = await Contact.create({});
     }
-    
+    const response = NextResponse.json(contactData, { status: 200 });
+    // Add CORS headers
+    response.headers.set('Access-Control-Allow-Origin', '*'); // Or your specific origin
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     return NextResponse.json(contactData, { status: 200 });
   } catch (error) {
     console.error('Error fetching contact information:', error);
@@ -69,7 +73,11 @@ export async function PUT(req: NextRequest) {
         { new: true, runValidators: true }
       );
     }
-    
+    const response = NextResponse.json(contactData, { status: 200 });
+    // Add CORS headers
+    response.headers.set('Access-Control-Allow-Origin', '*'); // Or your specific origin
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     return NextResponse.json(contactData, { status: 200 });
   } catch (error) {
     console.error('Error updating contact information:', error);
@@ -131,6 +139,11 @@ ${message}
       { status: 200 }
     );
     
+    const response = NextResponse.json({ message: 'Email sent successfully', id: data?.id },{ status: 200 });
+    // Add CORS headers
+    response.headers.set('Access-Control-Allow-Origin', '*'); // Or your specific origin
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   } catch (error: unknown) {
     console.error('Error in contact API route:', error);
     const errorMessage = error instanceof Error ? error.message : 'Internal server error';

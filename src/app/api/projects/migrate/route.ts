@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth/next';
 import dbConnect from '@/lib/db';
 import mongoose from 'mongoose';
 
+
 // This is a one-time migration route to convert old 'image' fields to 'featuredImage'
 export async function GET(req: NextRequest) {
   try {
@@ -50,12 +51,16 @@ export async function GET(req: NextRequest) {
         updated: result.modifiedCount > 0
       });
     }
-    
-    return NextResponse.json({
+
+      const response = NextResponse.json({
       message: 'Migration completed successfully',
       projectsUpdated: updateResults.length,
       details: updateResults
-    }, { status: 200 });
+    }, { status: 200 }); // Add CORS headers
+    response.headers.set('Access-Control-Allow-Origin', '*');
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    return response
   } catch (error) {
     console.error('Error migrating projects:', error);
     return NextResponse.json(

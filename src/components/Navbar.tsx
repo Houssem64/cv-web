@@ -1,135 +1,115 @@
 "use client";
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FiMenu, FiX } from 'react-icons/fi';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Close mobile menu when pathname changes
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [pathname]);
+
+  const navLinks = [
+    { href: '/', label: 'Home' },
+    { href: '/projects', label: 'Projects' },
+    { href: '/about', label: 'About' },
+    { href: '/contact', label: 'Contact' },
+  ];
+
   return (
-    <nav className="bg-white shadow-sm fixed w-full z-10">
+    <nav 
+      className={`fixed w-full z-50 transition-all duration-300 ${
+        scrolled 
+          ? 'bg-white shadow-md py-2' 
+          : 'bg-white/80 backdrop-blur-sm py-4'
+      }`}
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-center h-16">
-          <div className="hidden sm:flex sm:items-center sm:space-x-8">
-            <Link
-              href="/"
-              className={`inline-flex items-center px-1 pt-1 border-b-2 ${
-                pathname === '/' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              Home
-            </Link>
-            <Link
-              href="/projects"
-              className={`inline-flex items-center px-1 pt-1 border-b-2 ${
-                pathname === '/projects' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              Projects
-            </Link>
-            <Link
-              href="/about"
-              className={`inline-flex items-center px-1 pt-1 border-b-2 ${
-                pathname === '/about' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              About
-            </Link>
-            <Link
-              href="/contact"
-              className={`inline-flex items-center px-1 pt-1 border-b-2 ${
-                pathname === '/contact' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              Contact
-            </Link>
+        <div className="flex items-center justify-center relative">
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex md:items-center md:space-x-12">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`relative px-3 py-2 text-sm font-medium transition-colors duration-200 ${
+                  pathname === link.href 
+                    ? 'text-primary' 
+                    : 'text-gray-600 hover:text-primary'
+                }`}
+              >
+                {link.label}
+                {pathname === link.href && (
+                  <motion.div
+                    layoutId="navbar-indicator"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
+                    initial={false}
+                    transition={{ duration: 0.3 }}
+                  />
+                )}
+              </Link>
+            ))}
           </div>
-          <div className="flex items-center sm:hidden absolute right-4">
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden absolute right-0">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              type="button"
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
-              aria-expanded="false"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-primary hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary transition-colors duration-200"
+              aria-expanded={isMenuOpen ? 'true' : 'false'}
             >
-              <span className="sr-only">Open main menu</span>
-              {!isMenuOpen ? (
-                <svg
-                  className="block h-6 w-6"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  className="block h-6 w-6"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              )}
+              <span className="sr-only">Toggle menu</span>
+              {isMenuOpen ? <FiX className="h-6 w-6" /> : <FiMenu className="h-6 w-6" />}
             </button>
           </div>
         </div>
       </div>
 
-      {isMenuOpen && (
-        <div className="sm:hidden">
-          <div className="pt-2 pb-3 space-y-1">
-            <Link
-              href="/"
-              className={`block pl-3 pr-4 py-2 border-l-4 ${
-                pathname === '/' ? 'border-primary text-primary bg-primary/10' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800'
-              }`}
-            >
-              Home
-            </Link>
-            <Link
-              href="/projects"
-              className={`block pl-3 pr-4 py-2 border-l-4 ${
-                pathname === '/projects' ? 'border-primary text-primary bg-primary/10' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800'
-              }`}
-            >
-              Projects
-            </Link>
-            <Link
-              href="/about"
-              className={`block pl-3 pr-4 py-2 border-l-4 ${
-                pathname === '/about' ? 'border-primary text-primary bg-primary/10' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800'
-              }`}
-            >
-              About
-            </Link>
-            <Link
-              href="/contact"
-              className={`block pl-3 pr-4 py-2 border-l-4 ${
-                pathname === '/contact' ? 'border-primary text-primary bg-primary/10' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800'
-              }`}
-            >
-              Contact
-            </Link>
-          </div>
-        </div>
-      )}
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div 
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden overflow-hidden bg-white border-t"
+          >
+            <div className="space-y-1 px-4 pt-2 pb-3">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`block px-3 py-2 rounded-md text-base font-medium transition-all duration-200 ${
+                    pathname === link.href
+                      ? 'bg-primary/10 text-primary border-l-4 border-primary'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-primary'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };

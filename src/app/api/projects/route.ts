@@ -17,7 +17,12 @@ export async function GET(req: NextRequest) {
     
     const projects = await Project.find(query).sort({ createdAt: -1 });
     
-    return NextResponse.json(projects, { status: 200 });
+    const response = NextResponse.json(projects, { status: 200 });
+    // Add CORS headers
+    response.headers.set('Access-Control-Allow-Origin', '*');
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    return response;
   } catch (error) {
     console.error('Error fetching projects:', error);
     return NextResponse.json(
@@ -63,7 +68,12 @@ export async function POST(req: NextRequest) {
     // Create new project
     const project = await Project.create(body);
     
-    return NextResponse.json(project, { status: 201 });
+    const response = NextResponse.json(project, { status: 201 });
+    // Add CORS headers
+    response.headers.set('Access-Control-Allow-Origin', '*');
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    return response;
   } catch (error) {
     console.error('Error creating project:', error);
     return NextResponse.json(

@@ -16,7 +16,13 @@ export async function GET(req: NextRequest) {
       aboutData = await About.create({});
     }
     
-    return NextResponse.json(aboutData, { status: 200 });
+     const response = NextResponse.json(aboutData, { status: 200 });
+
+    // Add CORS headers
+    response.headers.set('Access-Control-Allow-Origin', '*');
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    return response
   } catch (error) {
     console.error('Error fetching about data:', error);
     return NextResponse.json(
@@ -58,7 +64,13 @@ export async function PUT(req: NextRequest) {
       );
     }
     
-    return NextResponse.json(aboutData, { status: 200 });
+    const response =  NextResponse.json(aboutData, { status: 200 });
+    
+        // Add CORS headers
+    response.headers.set('Access-Control-Allow-Origin', '*');
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    return response
   } catch (error) {
     console.error('Error updating about data:', error);
     return NextResponse.json(
@@ -89,7 +101,13 @@ export async function DELETE(req: NextRequest) {
     // Create a new document with default values
     const newAboutData = await About.create({});
     
-    return NextResponse.json(newAboutData, { status: 200 });
+    const response = NextResponse.json(newAboutData, { status: 200 });
+
+      // Add CORS headers
+    response.headers.set('Access-Control-Allow-Origin', '*');
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    return response
   } catch (error) {
     console.error('Error resetting about data:', error);
     return NextResponse.json(

@@ -7,29 +7,35 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 // Email validation regex
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+const headers = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
+
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { name, email, subject, message } = body;
     
     // Validate required fields
-    if (!name || !email || !message) {
-      return NextResponse.json(
-        { error: 'Name, email and message are required' },
-        { status: 400 }
-      );
+    if (!name || !email || !message) {    
+      return new NextResponse(JSON.stringify({ error: 'Name, email and message are required' }), {
+        status: 400,
+        headers: headers,
+      });
     }
-    
-    // Validate email format
+
     if (!emailRegex.test(email)) {
-      return NextResponse.json(
-        { error: 'Invalid email format' },
-        { status: 400 }
-      );
+      return new NextResponse(JSON.stringify({ error: 'Invalid email format' }), {
+        status: 400,
+        headers: headers,
+      });
     }
     
-    // Get recipient email from environment variable or use default
     const recipientEmail = process.env.CONTACT_EMAIL || 'houssem.dev@outlook.com';
+      
     
     // Send email using Resend
     const { data, error } = await resend.emails.send({
@@ -51,21 +57,20 @@ export async function POST(req: NextRequest) {
     
     if (error) {
       console.error('Error sending email:', error);
-      return NextResponse.json(
-        { error: 'Failed to send email' },
-        { status: 500 }
+      return new NextResponse(JSON.stringify({ error: 'Failed to send email' }), {
+        status: 500,
+        headers: headers,
+      }
       );
     }
     
-    return NextResponse.json(
-      { success: true, message: 'Email sent successfully' },
-      { status: 200 }
+    return new NextResponse(JSON.stringify({ success: true, message: 'Email sent successfully' }), {
+      status: 200,
+      headers: headers,
+    }
     );
   } catch (error) {
     console.error('Error in send-email API:', error);
-    return NextResponse.json(
-      { error: 'Failed to send email' },
-      { status: 500 }
-    );
+    return new NextResponse(JSON.stringify({ error: 'Failed to send email' }), { status: 500, headers: headers });
   }
 } 

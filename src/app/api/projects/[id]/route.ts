@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse, NextFetchEvent } from 'next/server';
 import { getServerSession } from 'next-auth/next';
 import dbConnect from '@/lib/db';
 import Project from '@/models/Project';
@@ -23,7 +23,13 @@ export async function GET(
       );
     }
 
-    return NextResponse.json(project, { status: 200 });
+    const response =  NextResponse.json(project, { status: 200 });
+
+    // Add CORS headers
+    response.headers.set('Access-Control-Allow-Origin', '*');
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    return response
   } catch (error) {
     console.error('Error fetching project:', error);
     return NextResponse.json(
@@ -78,7 +84,13 @@ export async function PUT(
       { new: true, runValidators: true }
     );
 
-    return NextResponse.json(updatedProject, { status: 200 });
+    const response =  NextResponse.json(updatedProject, { status: 200 });
+
+    // Add CORS headers
+    response.headers.set('Access-Control-Allow-Origin', '*');
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    return response
   } catch (error) {
     console.error('Error updating project:', error);
     return NextResponse.json(
@@ -123,10 +135,16 @@ export async function DELETE(
     // Delete project
     await Project.findByIdAndDelete(projectId);
 
-    return NextResponse.json(
+    const response = NextResponse.json(
       { message: 'Project deleted successfully' },
       { status: 200 }
     );
+
+    // Add CORS headers
+    response.headers.set('Access-Control-Allow-Origin', '*');
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    return response
   } catch (error) {
     console.error('Error deleting project:', error);
     return NextResponse.json(

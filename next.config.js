@@ -2,6 +2,8 @@
 const nextConfig = {
   // Disable type checking during production build to work around type errors
   typescript: {
+    // Enables react strict mode
+    reactStrictMode: true,
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
     // your project has type errors.

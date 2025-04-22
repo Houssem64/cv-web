@@ -39,29 +39,29 @@ export default async function ProjectPage({ params }: Props) {
   const allGalleryImages = [featuredImage, ...validImages.filter(img => img !== featuredImage)];
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen dark:bg-black">
       <Navbar />
       
       <article className="pt-24 pb-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {/* Project Header */}
           <div className="max-w-4xl mx-auto mb-8">
-            <h1 className="text-4xl font-bold mb-4">{project.title}</h1>
+            <h1 className="text-4xl font-bold mb-4 dark:text-white">{project.title}</h1>
             <div className="flex flex-wrap gap-2 mb-6">
               {project.tags.map((tag) => (
                 <span 
                   key={tag} 
-                  className="px-3 py-1 bg-gray-100 text-gray-800 text-sm font-medium rounded-full"
+                  className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300 text-sm font-medium rounded-full"
                 >
                   {tag}
                 </span>
               ))}
             </div>
-            <p className="text-xl text-gray-600 mb-8">{project.description}</p>
+            <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">{project.description}</p>
           </div>
           
           {/* Featured Image */}
-          <div className="max-w-4xl mx-auto mb-8 relative h-[50vh] min-h-[400px] rounded-lg overflow-hidden shadow-lg">
+          <div className="max-w-4xl mx-auto mb-8 relative h-[50vh] min-h-[400px] rounded-lg overflow-hidden shadow-lg dark:shadow-gray-800/40">
             <Image
               src={featuredImage}
               alt={project.title}
@@ -75,15 +75,15 @@ export default async function ProjectPage({ params }: Props) {
           {/* Image Gallery with Swipe */}
           {allGalleryImages.length > 0 && (
             <div className="max-w-4xl mx-auto mb-12">
-              <h2 className="text-2xl font-bold mb-4">Project Gallery</h2>
-              <Suspense fallback={<div>Loading gallery...</div>}>
+              <h2 className="text-2xl font-bold mb-4 dark:text-white">Project Gallery</h2>
+              <Suspense fallback={<div className="dark:text-gray-300">Loading gallery...</div>}>
                 <ImageGallery images={allGalleryImages} title={project.title} />
               </Suspense>
             </div>
           )}
           
           {/* Project Details */}
-          <div className="max-w-4xl mx-auto prose prose-lg">
+          <div className="max-w-4xl mx-auto prose prose-lg dark:prose-invert prose-headings:dark:text-white prose-p:dark:text-gray-300 prose-a:dark:text-gray-300 prose-strong:dark:text-white prose-code:dark:text-gray-300 prose-li:dark:text-gray-300">
             <div dangerouslySetInnerHTML={{ __html: project.fullDescription.replace(/\n/g, '<br />') }} />
             
             <div className="my-8 flex flex-wrap gap-4">

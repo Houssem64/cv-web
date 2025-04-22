@@ -32,17 +32,17 @@ export default async function Home() {
   }
   
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen dark:bg-black">
       <Navbar />
       
       {/* Hero Section */}
-      <section className="pt-16 lg:pt-24 pb-16 bg-gradient-to-br from-[#3490dc]/10 to-white">
+      <section className="pt-16 lg:pt-24 pb-16 bg-gradient-to-br from-[#3490dc]/10 to-white dark:bg-gradient-to-br dark:from-gray-900 dark:to-black">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16">
           <div className="flex flex-col items-center text-center">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6 dark:text-white">
               Backend Developer
             </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl">
+            <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl">
               I specialize in building robust and scalable backend systems with Java and Spring Boot. 
               Creating efficient APIs, microservices, and database solutions that power modern applications.
             </p>
@@ -50,7 +50,7 @@ export default async function Home() {
               <Link href="/projects" className="btn btn-primary">
                 View My Work
               </Link>
-              <Link href="/contact" className="btn bg-white border border-gray-300 text-gray-700 hover:bg-gray-50">
+              <Link href="/contact" className="btn bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700">
                 Contact Me
               </Link>
             </div>
@@ -59,24 +59,24 @@ export default async function Home() {
       </section>
 
       {/* Featured Projects Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white dark:bg-black">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold">Featured Projects</h2>
-            <p className="text-gray-600 mt-2">Some of my recent work</p>
+            <h2 className="text-3xl font-bold dark:text-white">Featured Projects</h2>
+            <p className="text-gray-600 dark:text-gray-400 mt-2">Some of my recent work</p>
           </div>
           
           {projectsError ? (
-            <div className="text-center p-8 bg-gray-50 rounded-lg">
-              <p className="text-red-600">{projectsError}</p>
-              <p className="text-gray-600 mt-2">There might be an issue with the database connection.</p>
+            <div className="text-center p-8 bg-gray-50 dark:bg-gray-900 rounded-lg">
+              <p className="text-red-600 dark:text-red-400">{projectsError}</p>
+              <p className="text-gray-600 dark:text-gray-400 mt-2">There might be an issue with the database connection.</p>
               <Link href="/admin/login" className="btn btn-primary mt-4">
                 Try Admin Login
               </Link>
             </div>
           ) : featuredProjects.length === 0 ? (
-            <div className="text-center p-8 bg-gray-50 rounded-lg">
-              <p className="text-gray-600">No projects found. Add some projects from the admin panel.</p>
+            <div className="text-center p-8 bg-gray-50 dark:bg-gray-900 rounded-lg">
+              <p className="text-gray-600 dark:text-gray-400">No projects found. Add some projects from the admin panel.</p>
               <Link href="/admin/login" className="btn btn-primary mt-4">
                 Go to Admin
               </Link>
@@ -105,31 +105,31 @@ export default async function Home() {
       </section>
 
       {/* Skills Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold">Skills</h2>
-            <p className="text-gray-600 mt-2">Technologies I work with</p>
+            <h2 className="text-3xl font-bold dark:text-white">Skills</h2>
+            <p className="text-gray-600 dark:text-gray-400 mt-2">Technologies I work with</p>
           </div>
           
           {skillsError ? (
-            <div className="text-center p-8 bg-white rounded-lg shadow-sm">
-              <p className="text-red-600">{skillsError}</p>
-              <p className="text-gray-600 mt-2">There might be an issue with the database connection.</p>
+            <div className="text-center p-8 bg-white dark:bg-black rounded-lg shadow-sm dark:shadow-gray-900/20">
+              <p className="text-red-600 dark:text-red-400">{skillsError}</p>
+              <p className="text-gray-600 dark:text-gray-400 mt-2">There might be an issue with the database connection.</p>
             </div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {skills && skills.length > 0 ? 
                 skills.map(skill => (
-                  <div key={skill._id} className="card text-center py-6">
-                    <p className="font-medium">{skill.name}</p>
+                  <div key={skill._id} className="bg-white dark:bg-black rounded-lg shadow-md dark:shadow-gray-800/40 p-6 transition-shadow hover:shadow-lg text-center py-6">
+                    <p className="font-medium dark:text-white">{skill.name}</p>
                     {skill.category !== 'Uncategorized' && (
-                      <span className="text-sm text-gray-500 mt-1 block">{skill.category}</span>
+                      <span className="text-sm text-gray-500 dark:text-gray-400 mt-1 block">{skill.category}</span>
                     )}
                   </div>
                 ))
               : 
-                <div className="col-span-full text-center py-6">
+                <div className="col-span-full text-center py-6 dark:text-gray-300">
                   <p>Skills data is currently unavailable.</p>
                 </div>
               }
@@ -139,13 +139,13 @@ export default async function Home() {
       </section>
 
       {/* Contact CTA Section */}
-      <section className="py-16 bg-[#3490dc] text-white">
+      <section className="py-16 bg-[#3490dc] dark:bg-black text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold mb-4">Need a Backend Solution?</h2>
-          <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl opacity-90 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
             Let's discuss your requirements for scalable APIs, microservices, or database architecture to power your applications.
             Let&apos;s discuss your requirements for scalable APIs, microservices, or database architecture to power your applications.          </p>
-          <Link href="/contact" className="btn bg-white text-[#3490dc] hover:bg-gray-100">
+          <Link href="/contact" className="btn bg-white dark:bg-gray-800 text-[#3490dc] dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
             Get in Touch
           </Link>
         </div>

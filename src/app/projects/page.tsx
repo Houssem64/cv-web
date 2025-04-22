@@ -34,30 +34,30 @@ export default async function ProjectsPage() {
   }
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen dark:bg-black">
       <Navbar />
       
-      <section className="pt-24 pb-16 bg-gray-50">
+      <section className="pt-24 pb-16 bg-gray-50 dark:bg-black">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4">My Projects</h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <h1 className="text-4xl font-bold mb-4 dark:text-white">My Projects</h1>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               A collection of my work, including web applications, design projects, and more.
             </p>
           </div>
 
           {projectsError ? (
-            <div className="bg-white rounded-lg shadow p-8 text-center">
-              <p className="text-red-600 mb-4">{projectsError}</p>
-              <p className="text-gray-500 mb-6">There might be an issue with the database connection.</p>              
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow dark:shadow-gray-800/40 p-8 text-center">
+              <p className="text-red-600 dark:text-red-400 mb-4">{projectsError}</p>
+              <p className="text-gray-500 dark:text-gray-400 mb-6">There might be an issue with the database connection.</p>              
               <Link href="/" className="btn btn-primary">
                 Return Home
               </Link>
             </div>
           ) : projects.length === 0 ? (
-            <div className="bg-white rounded-lg shadow p-8 text-center">
-              <p className="text-gray-600 mb-4">No projects found.</p>
-              <p className="text-gray-500 mb-6">Projects will appear here once they&apos;re added from the admin panel.</p>
+            <div className="bg-white dark:bg-gray-900 rounded-lg shadow dark:shadow-gray-800/40 p-8 text-center">
+              <p className="text-gray-600 dark:text-gray-300 mb-4">No projects found.</p>
+              <p className="text-gray-500 dark:text-gray-400 mb-6">Projects will appear here once they&apos;re added from the admin panel.</p>
               <Link href="/" className="btn btn-primary">
                 Return Home
               </Link>

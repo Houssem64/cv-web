@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 
 export default function AboutLoading() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-black">
       <Navbar />
       
       <main className="pt-24 pb-16">
@@ -17,8 +17,8 @@ export default function AboutLoading() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="h-10 w-1/3 bg-gray-200 rounded-md mb-4 animate-pulse" />
-            <div className="h-5 w-2/3 bg-gray-200 rounded-md animate-pulse" />
+            <div className="h-10 w-1/3 bg-gray-200 dark:bg-gray-800 rounded-md mb-4 animate-pulse" />
+            <div className="h-5 w-2/3 bg-gray-200 dark:bg-gray-800 rounded-md animate-pulse" />
           </motion.section>
           
           {/* About Content Skeleton */}
@@ -28,13 +28,13 @@ export default function AboutLoading() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
           >
-            <div className="relative h-[500px] rounded-lg overflow-hidden bg-gray-200 animate-pulse" />
+            <div className="relative h-[500px] rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-700 animate-pulse" />
             
             <div>
-              <div className="h-8 w-48 bg-gray-200 rounded-md mb-6 animate-pulse" />
+              <div className="h-8 w-48 bg-gray-200 dark:bg-gray-800 rounded-md mb-6 animate-pulse" />
               <div className="space-y-4">
                 {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="h-5 w-full bg-gray-200 rounded-md animate-pulse" />
+                  <div key={i} className="h-5 w-full bg-gray-200 dark:bg-gray-800 rounded-md animate-pulse" />
                 ))}
               </div>
             </div>
@@ -47,11 +47,11 @@ export default function AboutLoading() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <div className="h-8 w-36 bg-gray-200 rounded-md mb-6 animate-pulse" />
+            <div className="h-8 w-36 bg-gray-200 dark:bg-gray-800 rounded-md mb-6 animate-pulse" />
             
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {Array.from({ length: 12 }).map((_, i) => (
-                <div key={i} className="h-16 bg-gray-200 rounded-md animate-pulse" />
+                <div key={i} className="h-16 bg-gray-200 dark:bg-gray-700 rounded-md animate-pulse" />
               ))}
             </div>
           </motion.section>

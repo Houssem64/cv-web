@@ -94,15 +94,15 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen dark:bg-black">
       <Navbar />
       
       <main className="pt-24 pb-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header Section */}
           <section className="mb-12 text-center">
-            <h1 className="text-4xl font-bold mb-4">Get In Touch</h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <h1 className="text-4xl font-bold mb-4 dark:text-white">Get In Touch</h1>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Have a project in mind or want to discuss a potential collaboration? I'd love to hear from you.
             </p>
           </section>
@@ -110,17 +110,17 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Form */}
             <section>
-              <div className="card shadow-lg">
-                <h2 className="text-2xl font-bold mb-6">Send Me a Message</h2>
+              <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md dark:shadow-gray-800/40 p-6">
+                <h2 className="text-2xl font-bold mb-6 dark:text-white">Send Me a Message</h2>
                 
                 {status.success && (
-                  <div className="mb-6 p-4 bg-green-100 border border-green-300 text-green-700 rounded">
+                  <div className="mb-6 p-4 bg-green-100 dark:bg-green-900/20 border border-green-300 dark:border-green-900 text-green-700 dark:text-green-400 rounded">
                     Your message has been sent successfully. I&apos;ll get back to you soon!
                   </div>
                 )}
                 
                 {status.error && (
-                  <div className="mb-6 p-4 bg-red-100 border border-red-300 text-red-700 rounded">
+                  <div className="mb-6 p-4 bg-red-100 dark:bg-red-900/20 border border-red-300 dark:border-red-900 text-red-700 dark:text-red-400 rounded">
                     {status.error}
                   </div>
                 )}
@@ -128,7 +128,7 @@ export default function ContactPage() {
                 <form className="space-y-6" onSubmit={handleSubmit}>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
+                      <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         First Name
                       </label>
                       <input
@@ -137,12 +137,12 @@ export default function ContactPage() {
                         name="firstName"
                         value={formData.firstName}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-gray-400 focus:border-transparent"
                         required
                       />
                     </div>
                     <div>
-                      <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1">
+                      <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Last Name
                       </label>
                       <input
@@ -151,14 +151,14 @@ export default function ContactPage() {
                         name="lastName"
                         value={formData.lastName}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-gray-400 focus:border-transparent"
                         required
                       />
                     </div>
                   </div>
                   
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Email Address
                     </label>
                     <input
@@ -167,13 +167,13 @@ export default function ContactPage() {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-gray-400 focus:border-transparent"
                       required
                     />
                   </div>
                   
                   <div>
-                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Subject
                     </label>
                     <input
@@ -182,13 +182,13 @@ export default function ContactPage() {
                       name="subject"
                       value={formData.subject}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-gray-400 focus:border-transparent"
                       required
                     />
                   </div>
                   
                   <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Message
                     </label>
                     <textarea
@@ -197,7 +197,7 @@ export default function ContactPage() {
                       value={formData.message}
                       onChange={handleChange}
                       rows={5}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-gray-400 focus:border-transparent"
                       required
                     ></textarea>
                   </div>
@@ -215,44 +215,44 @@ export default function ContactPage() {
             
             {/* Contact Information */}
             <section>
-              <div className="card shadow-lg h-full">
-                <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
+              <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md dark:shadow-gray-800/40 p-6 h-full">
+                <h2 className="text-2xl font-bold mb-6 dark:text-white">Contact Information</h2>
                 {loading ? (
                   <div className="flex justify-center items-center py-8">
-                    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
+                    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary dark:border-white"></div>
                   </div>
                 ) : (
                   <div className="space-y-8">
                     {contactInfo?.email && (
                       <div>
-                        <h3 className="text-lg font-semibold text-primary mb-2">Email</h3>
-                        <p className="text-gray-700">{contactInfo.email}</p> 
+                        <h3 className="text-lg font-semibold text-primary dark:text-white mb-2">Email</h3>
+                        <p className="text-gray-700 dark:text-gray-300">{contactInfo.email}</p> 
                       </div>
                     )}
                     
                     {contactInfo?.phone && (
                       <div>
-                        <h3 className="text-lg font-semibold text-primary mb-2">Phone</h3>
-                        <p className="text-gray-700">{contactInfo.phone}</p>
+                        <h3 className="text-lg font-semibold text-primary dark:text-white mb-2">Phone</h3>
+                        <p className="text-gray-700 dark:text-gray-300">{contactInfo.phone}</p>
                       </div>
                     )}
                     
                     {contactInfo?.location && (
                       <div>
-                        <h3 className="text-lg font-semibold text-primary mb-2">Location</h3>
-                        <p className="text-gray-700">{contactInfo.location}</p>
+                        <h3 className="text-lg font-semibold text-primary dark:text-white mb-2">Location</h3>
+                        <p className="text-gray-700 dark:text-gray-300">{contactInfo.location}</p>
                       </div>
                     )}
                     
                     <div>
-                      <h3 className="text-lg font-semibold text-primary mb-2">Connect</h3>
+                      <h3 className="text-lg font-semibold text-primary dark:text-white mb-2">Connect</h3>
                       <div className="flex space-x-4">
                         {contactInfo?.github && (
                           <a
                             href={contactInfo.github}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-gray-700 hover:text-primary transition-colors"
+                            className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-white transition-colors"
                           >
                             GitHub
                           </a>
@@ -262,7 +262,7 @@ export default function ContactPage() {
                             href={contactInfo.linkedin}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-gray-700 hover:text-primary transition-colors"
+                            className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-white transition-colors"
                           >
                             LinkedIn
                           </a> 

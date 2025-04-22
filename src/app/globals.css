@@ -5,6 +5,21 @@
 @layer base {
   :root {
     --header-height: 4rem;
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --primary: 210 100% 53%;
+    --primary-foreground: 210 40% 98%;
+  }
+
+  .dark {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 100%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 0%;
   }
   
   body {
@@ -18,14 +33,14 @@
   }
   
   .btn-primary {
-    @apply bg-[#3490dc] text-white hover:bg-[#3490dc]/90;
+    @apply bg-primary text-white hover:bg-primary/90 dark:bg-gray-800 dark:hover:bg-gray-700;
   }
   
   .btn-secondary {
-    @apply bg-[#ffed4a] text-[#1a202c] hover:bg-[#ffed4a]/90;
+    @apply bg-[#ffed4a] text-[#1a202c] hover:bg-[#ffed4a]/90 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500;
   }
 
   .card {
-    @apply bg-white rounded-lg shadow-md p-6 transition-shadow hover:shadow-lg;
+    @apply bg-white dark:bg-gray-900 rounded-lg shadow-md dark:shadow-gray-900/20 p-6 transition-shadow hover:shadow-lg;
   }
 }

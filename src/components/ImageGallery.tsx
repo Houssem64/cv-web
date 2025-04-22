@@ -131,10 +131,10 @@ export default function ImageGallery({ images, title }: ImageGalleryProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.05 }}
-            className="relative h-64 rounded-lg overflow-hidden shadow-md cursor-pointer group"
+            className="relative h-64 rounded-lg overflow-hidden shadow-md dark:shadow-gray-900/20 cursor-pointer group"
             onClick={() => openGallery(index)}
           >
-            <div className={`absolute inset-0 bg-gray-200 ${loadedImages[index] ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}>
+            <div className={`absolute inset-0 bg-gray-200 dark:bg-gray-700 ${loadedImages[index] ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}>
               <div className="w-full h-full animate-pulse" />
             </div>
             <Image
@@ -150,8 +150,8 @@ export default function ImageGallery({ images, title }: ImageGalleryProps) {
             />
             <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-30 transition-opacity duration-300" />
             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <div className="bg-white bg-opacity-80 rounded-full p-3">
-                <IoExpandOutline size={20} className="text-gray-800" />
+              <div className="bg-white dark:bg-gray-800 bg-opacity-80 dark:bg-opacity-80 rounded-full p-3">
+                <IoExpandOutline size={20} className="text-gray-800 dark:text-gray-200" />
               </div>
             </div>
           </motion.div>

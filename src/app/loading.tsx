@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function Loading() {
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-white bg-opacity-80 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-white dark:bg-black bg-opacity-80 dark:bg-opacity-80 backdrop-blur-sm">
       <motion.div
         className="flex flex-col items-center"
         initial={{ opacity: 0, y: 10 }}
@@ -13,18 +13,18 @@ export default function Loading() {
       >
         <div className="relative w-16 h-16 mb-4">
           <motion.div
-            className="absolute inset-0 border-4 border-t-primary border-r-transparent border-b-transparent border-l-transparent rounded-full"
+            className="absolute inset-0 border-4 border-t-primary dark:border-t-white border-r-transparent border-b-transparent border-l-transparent rounded-full"
             animate={{ rotate: 360 }}
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
           />
           <motion.div
-            className="absolute inset-2 border-4 border-t-transparent border-r-primary border-b-transparent border-l-transparent rounded-full"
+            className="absolute inset-2 border-4 border-t-transparent border-r-primary dark:border-r-white border-b-transparent border-l-transparent rounded-full"
             animate={{ rotate: -360 }}
             transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
           />
         </div>
         <motion.p
-          className="text-gray-600 font-medium"
+          className="text-gray-600 dark:text-gray-300 font-medium"
           animate={{ opacity: [0.5, 1, 0.5] }}
           transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
         >

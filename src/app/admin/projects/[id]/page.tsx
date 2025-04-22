@@ -284,11 +284,8 @@ export default function EditProject({ params }: Props) {
 
   if (status === 'loading' || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
-        </div>
+      <div className="flex justify-center items-center h-screen bg-black">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
       </div>
     );
   }
@@ -297,259 +294,303 @@ export default function EditProject({ params }: Props) {
     return null;
   }
 
+  const isNew = projectId === 'new';
+  const pageTitle = isNew ? 'Add New Project' : 'Edit Project';
+
   return (
     <AdminLayout>
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold">Edit Project</h1>
-        <Link
-          href="/admin/projects"
-          className="text-primary hover:text-primary/80"
-        >
-          &larr; Back to Projects
-        </Link>
-      </div>
-      
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-          {error}
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-white">{pageTitle}</h1>
+          <Link
+            href="/admin/projects"
+            className="px-4 py-2 bg-white hover:bg-gray-200 text-black rounded-md flex items-center font-medium"
+          >
+            <svg
+              className="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              ></path>
+            </svg>
+            Back to Projects
+          </Link>
         </div>
-      )}
-      
-      <div className="bg-white rounded-lg shadow p-6">
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-              Title <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              required
-            />
+
+        {error && (
+          <div className="bg-red-900 border border-red-800 text-white px-4 py-3 rounded">
+            {error}
           </div>
-          
-          <div>
-            <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
-              Short Description <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              maxLength={500}
-              required
-            />
-            <p className="mt-1 text-xs text-gray-500">Brief description for project cards (max 500 characters)</p>
-          </div>
-          
-          <div>
-            <label htmlFor="fullDescription" className="block text-sm font-medium text-gray-700 mb-1">
-              Full Description <span className="text-red-500">*</span>
-            </label>
-            <textarea
-              id="fullDescription"
-              name="fullDescription"
-              value={formData.fullDescription}
-              onChange={handleChange}
-              rows={8}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              required
-            ></textarea>
-            <p className="mt-1 text-xs text-gray-500">Detailed description for the project page. Use blank lines for paragraphs.</p>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Featured Image <span className="text-red-500">*</span>
-            </label>
-            <div className="mt-1 flex flex-col space-y-4">
-              <div className="flex items-center space-x-4">
-                <button
-                  type="button"
-                  onClick={() => featuredInputRef.current?.click()}
-                  className="btn bg-gray-200 text-gray-800 hover:bg-gray-300"
-                  disabled={isUploading}
-                >
-                  {isUploading ? 'Uploading...' : 'Upload Image'}
-                </button>
+        )}
+
+        <form onSubmit={handleSubmit} className="bg-black rounded-lg p-6 space-y-6 border border-gray-800">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Left column - Basic Info */}
+            <div className="space-y-6">
+              <div>
+                <label htmlFor="title" className="block text-sm font-medium text-gray-300 mb-1">
+                  Project Title <span className="text-red-500">*</span>
+                </label>
                 <input
-                  type="file"
-                  ref={featuredInputRef}
-                  onChange={handleFeaturedImageChange}
-                  className="hidden"
-                  accept="image/*"
+                  type="text"
+                  id="title"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 rounded-md border border-gray-600 bg-gray-900 text-white focus:border-gray-500 focus:ring-1 focus:ring-gray-500"
+                  required
                 />
-                {isUploading && (
-                  <div className="flex items-center">
-                    <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-[#3490dc] mr-2"></div>
-                    <span className="text-sm text-gray-500">Uploading...</span>
-                  </div>
-                )}
               </div>
-              
-              {/* Image Preview */}
-              {featuredPreview && (
-                <div className="relative w-full h-48 overflow-hidden rounded-md border border-gray-300">
-                  <Image
-                    src={getImageSrc(featuredPreview)}
-                    alt="Featured Preview"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              )}
-              
-              {/* Hidden image URL input */}
-              <input
-                type="hidden"
-                id="featuredImage"
-                name="featuredImage"
-                value={formData.featuredImage}
-                required
-              />
-              
-              {formData.featuredImage && !isUploading && (
-                <p className="text-xs text-green-600">
-                  ✓ Image uploaded successfully
-                </p>
-              )}
+
+              <div>
+                <label htmlFor="description" className="block text-sm font-medium text-gray-300 mb-1">
+                  Short Description <span className="text-red-500">*</span>
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  rows={3}
+                  className="w-full px-4 py-2 rounded-md border border-gray-600 bg-gray-900 text-white focus:border-gray-500 focus:ring-1 focus:ring-gray-500"
+                  placeholder="A brief summary of your project (displayed in cards and lists)"
+                  required
+                />
+              </div>
+
+              <div>
+                <label htmlFor="fullDescription" className="block text-sm font-medium text-gray-300 mb-1">
+                  Full Description <span className="text-red-500">*</span>
+                </label>
+                <textarea
+                  id="fullDescription"
+                  name="fullDescription"
+                  value={formData.fullDescription}
+                  onChange={handleChange}
+                  rows={8}
+                  className="w-full px-4 py-2 rounded-md border border-gray-600 bg-gray-900 text-white focus:border-gray-500 focus:ring-1 focus:ring-gray-500"
+                  placeholder="Detailed description of your project (Markdown supported)"
+                  required
+                />
+              </div>
+
+              <div>
+                <label htmlFor="tags" className="block text-sm font-medium text-gray-300 mb-1">
+                  Tags <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="tags"
+                  name="tags"
+                  value={formData.tags}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 rounded-md border border-gray-600 bg-gray-900 text-white focus:border-gray-500 focus:ring-1 focus:ring-gray-500"
+                  placeholder="React, TypeScript, Tailwind (comma separated)"
+                  required
+                />
+              </div>
             </div>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Additional Images
-            </label>
-            <div className="mt-1 flex flex-col space-y-4">
-              <div className="flex items-center space-x-4">
-                <button
-                  type="button"
-                  onClick={() => additionalInputRef.current?.click()}
-                  className="btn bg-gray-200 text-gray-800 hover:bg-gray-300"
-                  disabled={isUploading}
-                >
-                  {isUploading ? 'Uploading...' : 'Upload Images'}
-                </button>
-                <input
-                  type="file"
-                  ref={additionalInputRef}
-                  onChange={handleAdditionalImagesChange}
-                  className="hidden"
-                  accept="image/*"
-                  multiple
-                />
-                {isUploading && (
-                  <div className="flex items-center">
-                    <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-[#3490dc] mr-2"></div>
-                    <span className="text-sm text-gray-500">Uploading...</span>
+
+            {/* Right column - Images & Links */}
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  Featured Image <span className="text-red-500">*</span>
+                </label>
+                <div className="flex flex-col space-y-2">
+                  {featuredPreview ? (
+                    <div className="relative border border-gray-600 rounded-md overflow-hidden h-48">
+                      <Image
+                        src={featuredPreview}
+                        alt="Featured preview"
+                        className="object-cover"
+                        fill
+                      />
+                    </div>
+                  ) : (
+                    <div className="border border-gray-600 rounded-md p-8 text-center bg-gray-900">
+                      <svg 
+                        className="mx-auto h-12 w-12 text-gray-500"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        ></path>
+                      </svg>
+                      <p className="mt-2 text-sm text-gray-400">No featured image selected</p>
+                    </div>
+                  )}
+                  <div className="flex items-center space-x-2">
+                    <button
+                      type="button"
+                      onClick={() => featuredInputRef.current?.click()}
+                      className="px-3 py-1.5 bg-white hover:bg-gray-200 text-black rounded-md text-sm flex-1 font-medium"
+                      disabled={isUploading}
+                    >
+                      {isUploading ? 'Uploading...' : 'Choose Image'}
+                    </button>
+                    <input
+                      type="file"
+                      ref={featuredInputRef}
+                      onChange={handleFeaturedImageChange}
+                      accept="image/*"
+                      className="hidden"
+                    />
+                    {formData.featuredImage && (
+                      <input
+                        type="text"
+                        value={formData.featuredImage}
+                        className="flex-1 px-3 py-1.5 rounded-md border border-gray-600 bg-gray-900 text-white text-sm focus:border-gray-500 focus:ring-1 focus:ring-gray-500"
+                        readOnly
+                      />
+                    )}
                   </div>
-                )}
+                </div>
               </div>
-              
-              {/* Image Previews */}
-              {additionalPreviews.map((preview, index) => (
-                <div key={index} className="relative w-full h-48 overflow-hidden rounded-md border border-gray-300">
-                  <Image
-                    src={getImageSrc(preview)}
-                    alt={`Additional Preview ${index + 1}`}
-                    fill
-                    className="object-cover"
-                  />
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  Additional Images
+                </label>
+                <div className="flex flex-col space-y-2">
+                  {additionalPreviews.length > 0 ? (
+                    <div className="grid grid-cols-2 gap-2">
+                      {additionalPreviews.map((preview, index) => (
+                        <div key={index} className="relative group border border-gray-600 rounded-md overflow-hidden h-24">
+                          <Image
+                            src={preview}
+                            alt={`Preview ${index}`}
+                            className="object-cover"
+                            fill
+                          />
+                          <button
+                            type="button"
+                            onClick={() => removeAdditionalImage(index)}
+                            className="absolute top-1 right-1 bg-white hover:bg-gray-200 text-black rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <svg
+                              className="w-4 h-4"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M6 18L18 6M6 6l12 12"
+                              ></path>
+                            </svg>
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="border border-gray-600 rounded-md p-4 text-center bg-gray-900">
+                      <p className="text-sm text-gray-400">No additional images selected</p>
+                    </div>
+                  )}
                   <button
                     type="button"
-                    onClick={() => removeAdditionalImage(index)}
-                    className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+                    onClick={() => additionalInputRef.current?.click()}
+                    className="px-3 py-1.5 bg-white hover:bg-gray-200 text-black rounded-md text-sm font-medium"
+                    disabled={isUploading}
                   >
-                    Remove
+                    {isUploading ? 'Uploading...' : 'Add Images'}
                   </button>
+                  <input
+                    type="file"
+                    ref={additionalInputRef}
+                    onChange={handleAdditionalImagesChange}
+                    accept="image/*"
+                    multiple
+                    className="hidden"
+                  />
                 </div>
-              ))}
+              </div>
+
+              <div>
+                <label htmlFor="link" className="block text-sm font-medium text-gray-300 mb-1">
+                  Live Project URL
+                </label>
+                <input
+                  type="url"
+                  id="link"
+                  name="link"
+                  value={formData.link}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 rounded-md border border-gray-600 bg-gray-900 text-white focus:border-gray-500 focus:ring-1 focus:ring-gray-500"
+                  placeholder="https://example.com"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="githubLink" className="block text-sm font-medium text-gray-300 mb-1">
+                  GitHub URL
+                </label>
+                <input
+                  type="url"
+                  id="githubLink"
+                  name="githubLink"
+                  value={formData.githubLink}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 rounded-md border border-gray-600 bg-gray-900 text-white focus:border-gray-500 focus:ring-1 focus:ring-gray-500"
+                  placeholder="https://github.com/yourusername/repo"
+                />
+              </div>
+
+              <div className="pt-2">
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id="featured"
+                    name="featured"
+                    checked={formData.featured}
+                    onChange={handleCheckboxChange}
+                    className="h-4 w-4 rounded border-gray-600 bg-gray-900 text-white focus:ring-gray-500"
+                  />
+                  <label htmlFor="featured" className="ml-2 block text-sm text-gray-300">
+                    Featured Project (shown prominently on portfolio)
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
-          
-          <div>
-            <label htmlFor="tags" className="block text-sm font-medium text-gray-700 mb-1">
-              Tags <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="tags"
-              name="tags"
-              value={formData.tags}
-              onChange={handleChange}
-              placeholder="React, Next.js, Tailwind CSS"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              required
-            />
-            <p className="mt-1 text-xs text-gray-500">Comma-separated list of technologies used</p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label htmlFor="link" className="block text-sm font-medium text-gray-700 mb-1">
-                Live Demo URL
-              </label>
-              <input
-                type="url"
-                id="link"
-                name="link"
-                value={formData.link}
-                onChange={handleChange}
-                placeholder="https://example.com"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              />
-            </div>
-            
-            <div>
-              <label htmlFor="githubLink" className="block text-sm font-medium text-gray-700 mb-1">
-                GitHub URL
-              </label>
-              <input
-                type="url"
-                id="githubLink"
-                name="githubLink"
-                value={formData.githubLink}
-                onChange={handleChange}
-                placeholder="https://github.com/username/repo"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              />
-            </div>
-          </div>
-          
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="featured"
-              name="featured"
-              checked={formData.featured}
-              onChange={handleCheckboxChange}
-              className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
-            />
-            <label htmlFor="featured" className="ml-2 block text-sm text-gray-700">
-              Feature this project on the homepage
-            </label>
-          </div>
-          
-          <div className="flex justify-end space-x-4">
+
+          <div className="flex justify-end space-x-3 pt-4 border-t border-gray-700">
             <Link
               href="/admin/projects"
-              className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+              className="px-4 py-2 bg-white hover:bg-gray-200 text-black rounded-md font-medium"
             >
               Cancel
             </Link>
             <button
               type="submit"
-              disabled={submitting}
-              className="px-4 py-2 border border-transparent rounded-md shadow-sm text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+              className="px-4 py-2 bg-white hover:bg-gray-200 text-black rounded-md flex items-center font-medium"
+              disabled={submitting || isUploading}
             >
-              {submitting ? 'Saving...' : 'Update Project'}
+              {submitting ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-black mr-2"></div>
+                  Saving...
+                </>
+              ) : (
+                'Save Project'
+              )}
             </button>
           </div>
         </form>

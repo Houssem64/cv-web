@@ -424,17 +424,17 @@ export default function EditAbout() {
   return (
     <AdminLayout>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold">Edit About Me</h1>
+        <h1 className="text-2xl font-bold text-white">Edit About Me</h1>
         <div className="flex space-x-4">
           <Link
             href="/admin/about/reset"
-            className="text-white bg-red-600 hover:bg-red-700 px-4 py-2 rounded-md text-sm"
+            className="text-black bg-white hover:bg-gray-200 px-4 py-2 rounded-md text-sm"
           >
             Reset & Add Custom Data
           </Link>
           <Link
             href="/admin/dashboard"
-            className="text-primary hover:text-primary/80"
+            className="text-white hover:text-gray-300"
           >
             &larr; Back to Dashboard
           </Link>
@@ -442,16 +442,16 @@ export default function EditAbout() {
       </div>
       
       {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <div className="bg-red-900 border border-red-700 text-white px-4 py-3 rounded mb-4">
           {error}
         </div>
       )}
       
-      <div className="bg-white rounded-lg shadow p-6">
+      <div className="bg-black rounded-lg shadow p-6 border border-gray-800 text-white">
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Header Info */}
           <div>
-            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="title" className="block text-sm font-medium text-white mb-1">
               Title
             </label>
             <input
@@ -460,13 +460,13 @@ export default function EditAbout() {
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
               required
             />
           </div>
           
           <div>
-            <label htmlFor="subtitle" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="subtitle" className="block text-sm font-medium text-white mb-1">
               Subtitle
             </label>
             <input
@@ -475,14 +475,14 @@ export default function EditAbout() {
               name="subtitle"
               value={formData.subtitle}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
               required
             />
           </div>
           
           {/* Profile Image */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-white mb-1">
               Profile Image
             </label>
             <div className="mt-1 flex flex-col space-y-4">
@@ -490,7 +490,7 @@ export default function EditAbout() {
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="btn bg-gray-200 text-gray-800 hover:bg-gray-300"
+                  className="btn bg-white text-black hover:bg-gray-200"
                   disabled={isUploading}
                 >
                   {isUploading ? 'Uploading...' : 'Upload Image'}
@@ -504,15 +504,15 @@ export default function EditAbout() {
                 />
                 {isUploading && (
                   <div className="flex items-center">
-                    <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-[#3490dc] mr-2"></div>
-                    <span className="text-sm text-gray-500">Uploading...</span>
+                    <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white mr-2"></div>
+                    <span className="text-sm text-gray-300">Uploading...</span>
                   </div>
                 )}
               </div>
               
               {/* Image Preview */}
               {previewImage && (
-                <div className="relative w-full h-48 overflow-hidden rounded-md border border-gray-300">
+                <div className="relative w-full h-48 overflow-hidden rounded-md border border-gray-700">
                   <Image
                     src={previewImage}
                     alt="Preview"
@@ -534,13 +534,13 @@ export default function EditAbout() {
           </div>
           
           {/* Bio */}
-          <div className="border-t pt-4">
+          <div className="border-t border-gray-800 pt-4">
             <div className="flex justify-between items-center mb-2">
-              <h2 className="text-lg font-medium">Bio</h2>
+              <h2 className="text-lg font-medium text-white">Bio</h2>
               <button
                 type="button"
                 onClick={addBioParagraph}
-                className="text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 px-2 py-1 rounded"
+                className="text-sm bg-white hover:bg-gray-200 text-black px-2 py-1 rounded"
               >
                 Add Paragraph
               </button>
@@ -553,12 +553,12 @@ export default function EditAbout() {
                     value={paragraph}
                     onChange={(e) => handleBioChange(index, e.target.value)}
                     rows={3}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
                   />
                   <button
                     type="button"
                     onClick={() => removeBioParagraph(index)}
-                    className="ml-2 text-red-500 hover:text-red-700"
+                    className="ml-2 text-red-400 hover:text-red-300"
                     disabled={formData.bio.length <= 1}
                   >
                     &times;
@@ -569,32 +569,32 @@ export default function EditAbout() {
           </div>
           
           {/* Skills */}
-          <div className="border-t pt-4">
-            <h2 className="text-lg font-medium mb-2">Skills</h2>
+          <div className="border-t border-gray-800 pt-4">
+            <h2 className="text-lg font-medium mb-2 text-white">Skills</h2>
             
             {formData.skills.map((skillCategory, categoryIndex) => (
-              <div key={categoryIndex} className="mb-6 p-4 bg-gray-50 rounded-md">
+              <div key={categoryIndex} className="mb-6 p-4 bg-gray-900 rounded-md border border-gray-800">
                 <div className="mb-3">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-white mb-1">
                     Category Title
                   </label>
                   <input
                     type="text"
                     value={skillCategory.title}
                     onChange={(e) => handleSkillTitleChange(categoryIndex, e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
                   />
                 </div>
                 
                 <div className="pl-4">
                   <div className="flex justify-between items-center mb-2">
-                    <label className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-white">
                       Skills
                     </label>
                     <button
                       type="button"
                       onClick={() => addSkillItem(categoryIndex)}
-                      className="text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 px-2 py-1 rounded"
+                      className="text-sm bg-white hover:bg-gray-200 text-black px-2 py-1 rounded"
                     >
                       Add Skill
                     </button>
@@ -606,12 +606,12 @@ export default function EditAbout() {
                         type="text"
                         value={item}
                         onChange={(e) => handleSkillItemChange(categoryIndex, itemIndex, e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
                       />
                       <button
                         type="button"
                         onClick={() => removeSkillItem(categoryIndex, itemIndex)}
-                        className="ml-2 text-red-500 hover:text-red-700"
+                        className="ml-2 text-red-400 hover:text-red-300"
                         disabled={skillCategory.items.length <= 1}
                       >
                         &times;
@@ -624,26 +624,26 @@ export default function EditAbout() {
           </div>
           
           {/* Work Experience */}
-          <div className="border-t pt-4">
+          <div className="border-t border-gray-800 pt-4">
             <div className="flex justify-between items-center mb-2">
-              <h2 className="text-lg font-medium">Work Experience</h2>
+              <h2 className="text-lg font-medium text-white">Work Experience</h2>
               <button
                 type="button"
                 onClick={addExperience}
-                className="text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 px-2 py-1 rounded"
+                className="text-sm bg-white hover:bg-gray-200 text-black px-2 py-1 rounded"
               >
                 Add Experience
               </button>
             </div>
             
             {formData.experiences.map((experience, index) => (
-              <div key={index} className="mb-6 p-4 bg-gray-50 rounded-md">
+              <div key={index} className="mb-6 p-4 bg-gray-900 rounded-md border border-gray-800">
                 <div className="flex justify-between items-start mb-3">
-                  <h3 className="text-md font-medium">Experience #{index + 1}</h3>
+                  <h3 className="text-md font-medium text-white">Experience #{index + 1}</h3>
                   <button
                     type="button"
                     onClick={() => removeExperience(index)}
-                    className="text-red-500 hover:text-red-700"
+                    className="text-red-400 hover:text-red-300"
                     disabled={formData.experiences.length <= 1}
                   >
                     Remove
@@ -652,52 +652,52 @@ export default function EditAbout() {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-white mb-1">
                       Job Title
                     </label>
                     <input
                       type="text"
                       value={experience.title}
                       onChange={(e) => handleExperienceChange(index, 'title', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-white mb-1">
                       Company
                     </label>
                     <input
                       type="text"
                       value={experience.company}
                       onChange={(e) => handleExperienceChange(index, 'company', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
                     />
                   </div>
                 </div>
                 
                 <div className="mb-3">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-white mb-1">
                     Period
                   </label>
                   <input
                     type="text"
                     value={experience.period}
                     onChange={(e) => handleExperienceChange(index, 'period', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
                     placeholder="e.g. 2020 - Present"
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-white mb-1">
                     Description
                   </label>
                   <textarea
                     value={experience.description}
                     onChange={(e) => handleExperienceChange(index, 'description', e.target.value)}
                     rows={3}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
                   />
                 </div>
               </div>
@@ -705,26 +705,26 @@ export default function EditAbout() {
           </div>
           
           {/* Education */}
-          <div className="border-t pt-4">
+          <div className="border-t border-gray-800 pt-4">
             <div className="flex justify-between items-center mb-2">
-              <h2 className="text-lg font-medium">Education</h2>
+              <h2 className="text-lg font-medium text-white">Education</h2>
               <button
                 type="button"
                 onClick={addEducation}
-                className="text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 px-2 py-1 rounded"
+                className="text-sm bg-white hover:bg-gray-200 text-black px-2 py-1 rounded"
               >
                 Add Education
               </button>
             </div>
             
             {formData.education.map((education, index) => (
-              <div key={index} className="mb-6 p-4 bg-gray-50 rounded-md">
+              <div key={index} className="mb-6 p-4 bg-gray-900 rounded-md border border-gray-800">
                 <div className="flex justify-between items-start mb-3">
-                  <h3 className="text-md font-medium">Education #{index + 1}</h3>
+                  <h3 className="text-md font-medium text-white">Education #{index + 1}</h3>
                   <button
                     type="button"
                     onClick={() => removeEducation(index)}
-                    className="text-red-500 hover:text-red-700"
+                    className="text-red-400 hover:text-red-300"
                     disabled={formData.education.length <= 1}
                   >
                     Remove
@@ -733,52 +733,52 @@ export default function EditAbout() {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-white mb-1">
                       Degree
                     </label>
                     <input
                       type="text"
                       value={education.degree}
                       onChange={(e) => handleEducationChange(index, 'degree', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-white mb-1">
                       Institution
                     </label>
                     <input
                       type="text"
                       value={education.institution}
                       onChange={(e) => handleEducationChange(index, 'institution', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
                     />
                   </div>
                 </div>
                 
                 <div className="mb-3">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-white mb-1">
                     Period
                   </label>
                   <input
                     type="text"
                     value={education.period}
                     onChange={(e) => handleEducationChange(index, 'period', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
                     placeholder="e.g. 2012 - 2016"
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-white mb-1">
                     Description
                   </label>
                   <textarea
                     value={education.description}
                     onChange={(e) => handleEducationChange(index, 'description', e.target.value)}
                     rows={3}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
                   />
                 </div>
               </div>
@@ -786,70 +786,70 @@ export default function EditAbout() {
           </div>
           
           {/* Contact Information */}
-          <div className="border-t pt-4">
-            <h2 className="text-lg font-medium mb-4">Contact Information</h2>
+          <div className="border-t border-gray-800 pt-4">
+            <h2 className="text-lg font-medium mb-4 text-white">Contact Information</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-white mb-1">
                   Location
                 </label>
                 <input
                   type="text"
                   value={formData.contactInfo?.location || ''}
                   onChange={(e) => handleContactInfoChange('location', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
                   placeholder="e.g. New York, USA"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-white mb-1">
                   Phone
                 </label>
                 <input
                   type="text"
                   value={formData.contactInfo?.phone || ''}
                   onChange={(e) => handleContactInfoChange('phone', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
                   placeholder="e.g. +1 234 567 8900"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-white mb-1">
                   Email
                 </label>
                 <input
                   type="email"
                   value={formData.contactInfo?.email || ''}
                   onChange={(e) => handleContactInfoChange('email', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
                   placeholder="e.g. yourname@example.com"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-white mb-1">
                   LinkedIn URL
                 </label>
                 <input
                   type="url"
                   value={formData.contactInfo?.linkedin || ''}
                   onChange={(e) => handleContactInfoChange('linkedin', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
                   placeholder="e.g. https://linkedin.com/in/username"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-white mb-1">
                   GitHub URL
                 </label>
                 <input
                   type="url"
                   value={formData.contactInfo?.github || ''}
                   onChange={(e) => handleContactInfoChange('github', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
                   placeholder="e.g. https://github.com/username"
                 />
               </div>
@@ -857,26 +857,26 @@ export default function EditAbout() {
           </div>
           
           {/* Certifications */}
-          <div className="border-t pt-4">
+          <div className="border-t border-gray-800 pt-4">
             <div className="flex justify-between items-center mb-2">
-              <h2 className="text-lg font-medium">Certifications</h2>
+              <h2 className="text-lg font-medium text-white">Certifications</h2>
               <button
                 type="button"
                 onClick={addCertification}
-                className="text-sm bg-gray-100 hover:bg-gray-200 text-gray-800 px-2 py-1 rounded"
+                className="text-sm bg-white hover:bg-gray-200 text-black px-2 py-1 rounded"
               >
                 Add Certification
               </button>
             </div>
             
             {(formData.certifications || []).map((certification, index) => (
-              <div key={index} className="mb-6 p-4 bg-gray-50 rounded-md">
+              <div key={index} className="mb-6 p-4 bg-gray-900 rounded-md border border-gray-800">
                 <div className="flex justify-between items-start mb-3">
-                  <h3 className="text-md font-medium">Certification #{index + 1}</h3>
+                  <h3 className="text-md font-medium text-white">Certification #{index + 1}</h3>
                   <button
                     type="button"
                     onClick={() => removeCertification(index)}
-                    className="text-red-500 hover:text-red-700"
+                    className="text-red-400 hover:text-red-300"
                   >
                     Remove
                   </button>
@@ -884,64 +884,64 @@ export default function EditAbout() {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-white mb-1">
                       Title
                     </label>
                     <input
                       type="text"
                       value={certification.title}
                       onChange={(e) => handleCertificationChange(index, 'title', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-white mb-1">
                       Issuer
                     </label>
                     <input
                       type="text"
                       value={certification.issuer}
                       onChange={(e) => handleCertificationChange(index, 'issuer', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
                     />
                   </div>
                 </div>
                 
                 <div className="mb-3">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-white mb-1">
                     Year
                   </label>
                   <input
                     type="text"
                     value={certification.year}
                     onChange={(e) => handleCertificationChange(index, 'year', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
                     placeholder="e.g. 2023"
                   />
                 </div>
                 
                 <div className="mb-3">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-white mb-1">
                     Credential ID (optional)
                   </label>
                   <input
                     type="text"
                     value={certification.credential || ''}
                     onChange={(e) => handleCertificationChange(index, 'credential', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-white mb-1">
                     Verification URL (optional)
                   </label>
                   <input
                     type="url"
                     value={certification.url || ''}
                     onChange={(e) => handleCertificationChange(index, 'url', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
                     placeholder="e.g. https://example.com/verify/123"
                   />
                 </div>
@@ -953,14 +953,14 @@ export default function EditAbout() {
           <div className="flex justify-end space-x-4">
             <Link
               href="/admin/dashboard"
-              className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+              className="px-4 py-2 border border-gray-700 rounded-md text-black bg-white hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white"
             >
               Cancel
             </Link>
             <button
               type="submit"
               disabled={submitting}
-              className="px-4 py-2 border border-transparent rounded-md shadow-sm text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+              className="px-4 py-2 border border-transparent rounded-md shadow-sm text-black bg-white hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white"
             >
               {submitting ? 'Saving...' : 'Save Changes'}
             </button>

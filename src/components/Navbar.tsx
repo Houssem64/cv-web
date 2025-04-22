@@ -2,9 +2,11 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <nav className="bg-white shadow-sm fixed w-full z-10">
@@ -13,25 +15,33 @@ const Navbar = () => {
           <div className="hidden sm:flex sm:items-center sm:space-x-8">
             <Link
               href="/"
-              className="inline-flex items-center px-1 pt-1 border-b-2 border-primary text-sm font-medium"
+              className={`inline-flex items-center px-1 pt-1 border-b-2 ${
+                pathname === '/' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
             >
               Home
             </Link>
             <Link
               href="/projects"
-              className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              className={`inline-flex items-center px-1 pt-1 border-b-2 ${
+                pathname === '/projects' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
             >
               Projects
             </Link>
             <Link
               href="/about"
-              className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              className={`inline-flex items-center px-1 pt-1 border-b-2 ${
+                pathname === '/about' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
             >
               About
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              className={`inline-flex items-center px-1 pt-1 border-b-2 ${
+                pathname === '/contact' ? 'border-primary text-primary' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              }`}
             >
               Contact
             </Link>
@@ -87,25 +97,33 @@ const Navbar = () => {
           <div className="pt-2 pb-3 space-y-1">
             <Link
               href="/"
-              className="block pl-3 pr-4 py-2 border-l-4 border-primary text-base font-medium text-primary bg-primary/10"
+              className={`block pl-3 pr-4 py-2 border-l-4 ${
+                pathname === '/' ? 'border-primary text-primary bg-primary/10' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800'
+              }`}
             >
               Home
             </Link>
             <Link
               href="/projects"
-              className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+              className={`block pl-3 pr-4 py-2 border-l-4 ${
+                pathname === '/projects' ? 'border-primary text-primary bg-primary/10' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800'
+              }`}
             >
               Projects
             </Link>
             <Link
               href="/about"
-              className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+              className={`block pl-3 pr-4 py-2 border-l-4 ${
+                pathname === '/about' ? 'border-primary text-primary bg-primary/10' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800'
+              }`}
             >
               About
             </Link>
             <Link
               href="/contact"
-              className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+              className={`block pl-3 pr-4 py-2 border-l-4 ${
+                pathname === '/contact' ? 'border-primary text-primary bg-primary/10' : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800'
+              }`}
             >
               Contact
             </Link>
@@ -116,4 +134,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar; 
+export default Navbar;

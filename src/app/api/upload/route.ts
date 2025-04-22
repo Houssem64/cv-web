@@ -42,12 +42,7 @@ export async function POST(req: NextRequest) {
     // Upload the file to Cloudflare R2
     const fileUrl = await uploadFileToR2(buffer, uniqueFileName, file.type);
 
-    const response =  NextResponse.json({ url: fileUrl }, { status: 200 });
-
-    // Add CORS headers
-    response.headers.set('Access-Control-Allow-Origin', '*');
-    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    const response = NextResponse.json({ url: fileUrl });
 
     return response;
   } catch (error) {

@@ -24,11 +24,7 @@ export async function GET(
       );
     }
     
-      const response =  NextResponse.json(skill, { status: 200 });
-    // Add CORS headers
-    response.headers.set('Access-Control-Allow-Origin', '*');
-    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    const response = NextResponse.json(skill);
     return response;
   } catch (error) {
     // Fix for Next.js 15.3.1 requirement to await params
@@ -85,11 +81,7 @@ export async function PUT(
       );
     }
     
-       const response =  NextResponse.json(skill, { status: 200 });
-    // Add CORS headers
-    response.headers.set('Access-Control-Allow-Origin', '*');
-    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    const response = NextResponse.json(skill);
     return response;
   } catch (error) {
     // Fix for Next.js 15.3.1 requirement to await params
@@ -133,11 +125,7 @@ export async function DELETE(
       );
     }
     
-      const response =  NextResponse.json({ message: 'Skill deleted successfully' }, { status: 200 });
-    // Add CORS headers
-    response.headers.set('Access-Control-Allow-Origin', '*');
-    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    const response = NextResponse.json({ message: 'Skill deleted successfully' });
     return response;
   } catch (error) {
     // Fix for Next.js 15.3.1 requirement to await params

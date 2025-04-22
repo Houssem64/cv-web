@@ -24,12 +24,7 @@ export async function GET(
     }
 
     const response =  NextResponse.json(project, { status: 200 });
-
-    // Add CORS headers
-    response.headers.set('Access-Control-Allow-Origin', '*');
-    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    return response
+    return response;
   } catch (error) {
     console.error('Error fetching project:', error);
     return NextResponse.json(
@@ -85,12 +80,7 @@ export async function PUT(
     );
 
     const response =  NextResponse.json(updatedProject, { status: 200 });
-
-    // Add CORS headers
-    response.headers.set('Access-Control-Allow-Origin', '*');
-    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    return response
+    return response;
   } catch (error) {
     console.error('Error updating project:', error);
     return NextResponse.json(
@@ -139,12 +129,7 @@ export async function DELETE(
       { message: 'Project deleted successfully' },
       { status: 200 }
     );
-
-    // Add CORS headers
-    response.headers.set('Access-Control-Allow-Origin', '*');
-    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    return response
+    return response;
   } catch (error) {
     console.error('Error deleting project:', error);
     return NextResponse.json(

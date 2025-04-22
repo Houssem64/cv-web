@@ -11,12 +11,7 @@ export async function GET(req: NextRequest) {
     // Get skills, sorted by category and then by name
     const skills = await Skill.find({}).sort({ category: 1, name: 1 });
     
-    const response =  NextResponse.json(skills, { status: 200 });
-    
-    // Add CORS headers
-    response.headers.set('Access-Control-Allow-Origin', '*');
-    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    const response = NextResponse.json(skills);
     
     return response;
   } catch (error) {
@@ -55,12 +50,7 @@ export async function POST(req: NextRequest) {
     // Create the new skill
     const skill = await Skill.create(body);
     
-    const response =  NextResponse.json(skill, { status: 201 });
-    
-    // Add CORS headers
-    response.headers.set('Access-Control-Allow-Origin', '*');
-    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    const response = NextResponse.json(skill);
     
     return response;
   } catch (error) {

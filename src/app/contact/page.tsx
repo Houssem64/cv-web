@@ -115,7 +115,7 @@ export default function ContactPage() {
                 
                 {status.success && (
                   <div className="mb-6 p-4 bg-green-100 border border-green-300 text-green-700 rounded">
-                    Your message has been sent successfully. I'll get back to you soon!
+                    Your message has been sent successfully. I&apos;ll get back to you soon!
                   </div>
                 )}
                 
@@ -226,7 +226,7 @@ export default function ContactPage() {
                     {contactInfo?.email && (
                       <div>
                         <h3 className="text-lg font-semibold text-primary mb-2">Email</h3>
-                        <p className="text-gray-700">{contactInfo.email}</p>
+                        <p className="text-gray-700">{contactInfo.email}</p> 
                       </div>
                     )}
                     
@@ -265,7 +265,7 @@ export default function ContactPage() {
                             className="text-gray-700 hover:text-primary transition-colors"
                           >
                             LinkedIn
-                          </a>
+                          </a> 
                         )}
                       </div>
                     </div>

@@ -42,7 +42,7 @@ export default function ImageGallery({ images, title }: ImageGalleryProps) {
       timeoutRef.current = setTimeout(() => {
         setTransitioning(false);
       }, 300);
-    }, 50);
+    }, 50) ;
   };
 
   const goToNext = () => {
@@ -58,7 +58,7 @@ export default function ImageGallery({ images, title }: ImageGalleryProps) {
       timeoutRef.current = setTimeout(() => {
         setTransitioning(false);
       }, 300);
-    }, 50);
+    }, 50) ;
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -83,13 +83,13 @@ export default function ImageGallery({ images, title }: ImageGalleryProps) {
   };
 
   // Handle keyboard navigation
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {   
     if (!isOpen) return;
     if (e.key === 'ArrowLeft') goToPrevious();
     if (e.key === 'ArrowRight') goToNext();
     if (e.key === 'Escape') closeGallery();
-  }, [isOpen]);
-
+  }, [isOpen, goToPrevious, goToNext]);
+  
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     return () => {

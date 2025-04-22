@@ -144,7 +144,7 @@ export default async function Home() {
           <h2 className="text-3xl font-bold mb-4">Need a Backend Solution?</h2>
           <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto">
             Let's discuss your requirements for scalable APIs, microservices, or database architecture to power your applications.
-          </p>
+            Let&apos;s discuss your requirements for scalable APIs, microservices, or database architecture to power your applications.          </p>
           <Link href="/contact" className="btn bg-white text-[#3490dc] hover:bg-gray-100">
             Get in Touch
           </Link>

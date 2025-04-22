@@ -49,7 +49,7 @@ export default async function ProjectsPage() {
           {projectsError ? (
             <div className="bg-white rounded-lg shadow p-8 text-center">
               <p className="text-red-600 mb-4">{projectsError}</p>
-              <p className="text-gray-500 mb-6">There might be an issue with the database connection.</p>
+              <p className="text-gray-500 mb-6">There might be an issue with the database connection.</p>              
               <Link href="/" className="btn btn-primary">
                 Return Home
               </Link>
@@ -57,7 +57,7 @@ export default async function ProjectsPage() {
           ) : projects.length === 0 ? (
             <div className="bg-white rounded-lg shadow p-8 text-center">
               <p className="text-gray-600 mb-4">No projects found.</p>
-              <p className="text-gray-500 mb-6">Projects will appear here once they're added from the admin panel.</p>
+              <p className="text-gray-500 mb-6">Projects will appear here once they&apos;re added from the admin panel.</p>
               <Link href="/" className="btn btn-primary">
                 Return Home
               </Link>

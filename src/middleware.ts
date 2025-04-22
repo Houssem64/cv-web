@@ -3,8 +3,7 @@ import type { NextRequest } from 'next/server';
 
 // List of allowed origins
 const allowedOrigins = [
-  'https://cv-web-kappa.vercel.app',
-  'https://cv-bkata4693-houssem64s-projects.vercel.app',
+  'https://cv-web-jmly.onrender.com',
   'http://localhost:3000'
 ];
 
@@ -51,7 +50,7 @@ export function middleware(request: NextRequest) {
 // Configure which routes the middleware will run on
 export const config = {
   matcher: [
-    // Match all API routes
+    // Match all API routes including auth
     '/api/:path*',
   ],
 }; 

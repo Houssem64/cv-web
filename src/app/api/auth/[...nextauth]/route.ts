@@ -1,7 +1,5 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { NextResponse } from 'next/server';
-import { compare } from 'bcryptjs';
 
 // Extend the session types to include id
 declare module "next-auth" {
@@ -12,22 +10,6 @@ declare module "next-auth" {
       email?: string | null;
       image?: string | null;
     }
-  }
-}
-
-// Function to add CORS headers
-function addCorsHeaders(response: NextResponse) {
-  response.headers.set('Access-Control-Allow-Origin', '*');
-  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-}
-
-const corsHandler = async (req: Request, res: NextResponse) => {
-  if (req.method === 'OPTIONS') {
-    return new NextResponse(null, {
-      status: 204,
-    }
-  )
   }
 }
 
@@ -94,13 +76,4 @@ const handler = NextAuth({
   },
 });
 
-export const GET = async (req: Request) => {
-  const response = await handler(req);
-  addCorsHeaders(new NextResponse(response.body, response));
-  return response;
-};
-export const POST = async (req: Request) => {
-  const response = await handler(req);
-  addCorsHeaders(new NextResponse(response.body, response));
-  return response;
-}
+export { handler as GET, handler as POST }

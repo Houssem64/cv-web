@@ -12,22 +12,38 @@ export function middleware(request: NextRequest) {
   // Get the origin from the request headers
   const origin = request.headers.get('origin');
   
-  // Get the response
+  // Handle preflight requests
+  if (request.method === 'OPTIONS') {
+    const response = new NextResponse(null, { status: 200 });
+    
+    // Set CORS headers for preflight
+    if (origin && allowedOrigins.includes(origin)) {
+      response.headers.set('Access-Control-Allow-Origin', origin);
+    } else {
+      response.headers.set('Access-Control-Allow-Origin', '*');
+    }
+    
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    response.headers.set('Access-Control-Allow-Credentials', 'true');
+    response.headers.set('Access-Control-Max-Age', '86400');
+    
+    return response;
+  }
+
+  // Handle actual requests
   const response = NextResponse.next();
 
-  // Check if the origin is allowed
+  // Set CORS headers for actual requests
   if (origin && allowedOrigins.includes(origin)) {
     response.headers.set('Access-Control-Allow-Origin', origin);
   } else {
-    // For requests without origin (like direct browser requests)
     response.headers.set('Access-Control-Allow-Origin', '*');
   }
 
-  // Add the remaining CORS headers
   response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   response.headers.set('Access-Control-Allow-Credentials', 'true');
-  response.headers.set('Access-Control-Max-Age', '86400'); // 24 hours
 
   return response;
 }
@@ -37,9 +53,5 @@ export const config = {
   matcher: [
     // Match all API routes
     '/api/:path*',
-    // Match all static files
-    '/_next/static/:path*',
-    // Match all routes
-    '/:path*',
   ],
 }; 

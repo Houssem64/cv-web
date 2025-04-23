@@ -34,14 +34,12 @@ const nextConfig = {
       },
     ],
   },
-  // Improve Vercel deployment
-  output: 'standalone',
-  // Required for SSR and API routes to work properly on Vercel
-  distDir: '.next',
+ 
+ 
   // Prevent issues with react-icons
   transpilePackages: ['react-icons'],
   // Configure proper URL handling for Vercel
-  assetPrefix: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined,
+ 
 }
 
 module.exports = nextConfig 

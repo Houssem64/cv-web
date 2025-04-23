@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 
 // List of allowed origins
 const allowedOrigins = [
-  'https://cv-web-jmly.onrender.com',
+  'https://houssem-mehouachi.netlify.app',
   'http://localhost:3000'
 ];
 

@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-// List of allowed origins
+// List of allowed origins - temporarily allow all origins
 const allowedOrigins = [
   'https://houssem-mehouachi.netlify.app',
-  'http://localhost:3000'
+  'http://localhost:3000',
+  // Temporarily allowing all origins
+  '*'
 ];
 
 export function middleware(request: NextRequest) {
@@ -15,12 +17,8 @@ export function middleware(request: NextRequest) {
   if (request.method === 'OPTIONS') {
     const response = new NextResponse(null, { status: 200 });
     
-    // Set CORS headers for preflight
-    if (origin && allowedOrigins.includes(origin)) {
-      response.headers.set('Access-Control-Allow-Origin', origin);
-    } else {
-      response.headers.set('Access-Control-Allow-Origin', '*');
-    }
+    // Allow any origin temporarily
+    response.headers.set('Access-Control-Allow-Origin', '*');
     
     response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -33,12 +31,8 @@ export function middleware(request: NextRequest) {
   // Handle actual requests
   const response = NextResponse.next();
 
-  // Set CORS headers for actual requests
-  if (origin && allowedOrigins.includes(origin)) {
-    response.headers.set('Access-Control-Allow-Origin', origin);
-  } else {
-    response.headers.set('Access-Control-Allow-Origin', '*');
-  }
+  // Allow any origin temporarily
+  response.headers.set('Access-Control-Allow-Origin', '*');
 
   response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');

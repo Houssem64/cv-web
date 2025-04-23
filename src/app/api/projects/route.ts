@@ -6,25 +6,57 @@ import Project from '@/models/Project';
 // GET /api/projects - Get all projects
 export async function GET(req: NextRequest) {
   try {
+    console.log('GET /api/projects - Attempting to connect to database...');
     await dbConnect();
+    console.log('GET /api/projects - Database connected successfully');
     
     const featured = req.nextUrl.searchParams.get('featured') === 'true';
     
     let query = {};
     if (featured) {
       query = { featured: true };
+      console.log('GET /api/projects - Fetching featured projects only');
+    } else {
+      console.log('GET /api/projects - Fetching all projects');
     }
     
     const projects = await Project.find(query).sort({ createdAt: -1 });
+    console.log(`GET /api/projects - Retrieved ${projects.length} projects`);
     
     const response = NextResponse.json(projects, { status: 200 });
+    // Add CORS headers to ensure frontend can access the API
+    response.headers.set('Access-Control-Allow-Origin', '*');
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    
     return response;
-  } catch (error) {
-    console.error('Error fetching projects:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch projects' },
+  } catch (error: any) {
+    console.error('Error fetching projects:', error.name, error.message);
+    console.error('Error stack:', error.stack);
+    
+    // Provide more detailed error info based on the error type
+    let errorMessage = 'Failed to fetch projects';
+    if (error.name === 'MongoNetworkError') {
+      errorMessage = 'Database connection error. Please check network connectivity.';
+    } else if (error.name === 'MongoServerSelectionError') {
+      errorMessage = 'Database server selection timeout. Ensure MongoDB Atlas IP access is configured.';
+    }
+    
+    const errorResponse = NextResponse.json(
+      { 
+        error: errorMessage,
+        errorType: error.name,
+        message: error.message 
+      },
       { status: 500 }
     );
+    
+    // Add CORS headers to ensure frontend can access the error response
+    errorResponse.headers.set('Access-Control-Allow-Origin', '*');
+    errorResponse.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    errorResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    
+    return errorResponse;
   }
 }
 
@@ -66,10 +98,11 @@ export async function POST(req: NextRequest) {
     
     const response = NextResponse.json(project, { status: 201 });
     return response;
-  } catch (error) {
-    console.error('Error creating project:', error);
+  } catch (error: any) {
+    console.error('Error creating project:', error.name, error.message);
+    console.error('Error stack:', error.stack);
     return NextResponse.json(
-      { error: 'Failed to create project' },
+      { error: 'Failed to create project', message: error.message },
       { status: 500 }
     );
   }

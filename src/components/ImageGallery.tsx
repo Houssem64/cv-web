@@ -40,13 +40,11 @@ export default function ImageGallery({ images, title }: ImageGalleryProps) {
     setDirection('prev');
     setTransitioning(true);
     
-    timeoutRef.current = setTimeout(() => {
-      setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-      
-      timeoutRef.current = setTimeout(() => {
-        setTransitioning(false);
-      }, 300);
-    }, 50);
+    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    
+    setTimeout(() => {
+      setTransitioning(false);
+    }, 300);
   }, [transitioning, images.length]);
 
   const goToNext = useCallback(() => {
@@ -54,13 +52,11 @@ export default function ImageGallery({ images, title }: ImageGalleryProps) {
     setDirection('next');
     setTransitioning(true);
     
-    timeoutRef.current = setTimeout(() => {
-      setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-      
-      timeoutRef.current = setTimeout(() => {
-        setTransitioning(false);
-      }, 300);
-    }, 50);
+    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    
+    setTimeout(() => {
+      setTransitioning(false);
+    }, 300);
   }, [transitioning, images.length]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -112,25 +108,43 @@ export default function ImageGallery({ images, title }: ImageGalleryProps) {
       img.src = src;
     };
     
-    preloadImage(images[nextIndex]);
-    preloadImage(images[prevIndex]);
+    if (images[nextIndex]) preloadImage(images[nextIndex]);
+    if (images[prevIndex]) preloadImage(images[prevIndex]);
   }, [currentIndex, images]);
+
+  // Animation variants for framer-motion
+  const gridVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { 
+        staggerChildren: 0.1
+      } 
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.3 }
+    }
+  };
 
   return (
     <>
       {/* Image Grid */}
       <motion.div 
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ staggerChildren: 0.1 }}
+        variants={gridVariants}
+        initial="hidden"
+        animate="visible"
       >
         {images.map((imageUrl, index) => (
           <motion.div 
             key={index}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: index * 0.05 }}
+            variants={itemVariants}
             className="relative h-64 rounded-lg overflow-hidden shadow-md dark:shadow-gray-900/20 cursor-pointer group"
             onClick={() => openGallery(index)}
           >
@@ -145,8 +159,6 @@ export default function ImageGallery({ images, title }: ImageGalleryProps) {
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               loading="lazy"
               onLoadingComplete={() => handleImageLoaded(index)}
-              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-              placeholder="blur"
             />
             <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-30 transition-opacity duration-300" />
             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -191,21 +203,12 @@ export default function ImageGallery({ images, title }: ImageGalleryProps) {
               onTouchEnd={handleTouchEnd}
             >
               <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-                <AnimatePresence initial={false} mode="wait">
+                <AnimatePresence mode="wait" initial={false}>
                   <motion.div
                     key={currentIndex}
-                    initial={{ 
-                      x: direction === 'next' ? 500 : -500,
-                      opacity: 0 
-                    }}
-                    animate={{ 
-                      x: 0,
-                      opacity: 1 
-                    }}
-                    exit={{ 
-                      x: direction === 'next' ? -500 : 500,
-                      opacity: 0 
-                    }}
+                    initial={{ opacity: 0, x: direction === 'next' ? 100 : -100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: direction === 'next' ? -100 : 100 }}
                     transition={{ duration: 0.3 }}
                     className="absolute inset-0 flex items-center justify-center"
                   >
@@ -222,8 +225,8 @@ export default function ImageGallery({ images, title }: ImageGalleryProps) {
               </div>
               
               <motion.button 
-                initial={{ x: -20, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2 }}
                 onClick={goToPrevious}
                 className="absolute left-6 top-1/2 -translate-y-1/2 text-white p-3 rounded-full bg-black/50 hover:bg-black/70 transition-colors duration-300 z-10"
@@ -236,8 +239,8 @@ export default function ImageGallery({ images, title }: ImageGalleryProps) {
               </motion.button>
               
               <motion.button 
-                initial={{ x: 20, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2 }}
                 onClick={goToNext}
                 className="absolute right-6 top-1/2 -translate-y-1/2 text-white p-3 rounded-full bg-black/50 hover:bg-black/70 transition-colors duration-300 z-10"
@@ -250,8 +253,8 @@ export default function ImageGallery({ images, title }: ImageGalleryProps) {
               </motion.button>
               
               <motion.div 
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
                 className="absolute bottom-4 left-0 right-0 text-center text-white bg-black/60 py-2 px-4 rounded-full max-w-[120px] mx-auto shadow-lg"
               >

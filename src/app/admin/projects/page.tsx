@@ -8,10 +8,12 @@ import Image from 'next/image';
 import AdminLayout from '@/components/AdminLayout';
 
 interface Project {
-  id: string;
+  _id: string;
+  id?: string; // Keep for backward compatibility
   title: string;
   description: string;
-  image: string;
+  image?: string;
+  featuredImage?: string; // Support for newer field name
   featured: boolean;
   tags: string[];
   link: string;
@@ -67,7 +69,7 @@ export default function AdminProjects() {
       });
 
       if (response.ok) {
-        setProjects(projects.filter((project) => project.id !== deleteId));
+        setProjects(projects.filter((project) => project._id !== deleteId));
         setShowDeleteModal(false);
         setDeleteId(null);
       } else {
@@ -146,14 +148,14 @@ export default function AdminProjects() {
           <div className="grid grid-cols-1 gap-6">
             {projects.map((project) => (
               <div
-                key={project.id}
+                key={project._id}
                 className="bg-black rounded-lg shadow-md overflow-hidden border border-gray-800"
               >
                 <div className="flex flex-col md:flex-row">
                   <div className="relative w-full md:w-1/4 h-48">
-                    {project.image ? (
+                    {project.featuredImage || project.image ? (
                       <Image
-                        src={project.image}
+                        src={project.featuredImage || project.image || ''}
                         alt={project.title}
                         fill
                         className="object-cover"
@@ -208,13 +210,13 @@ export default function AdminProjects() {
 
                     <div className="flex justify-end space-x-3">
                       <Link
-                        href={`/admin/projects/${project.id}`}
+                        href={`/admin/projects/${project._id}`}
                         className="px-3 py-1.5 bg-white hover:bg-gray-200 text-black rounded-md text-sm font-medium"
                       >
                         Edit
                       </Link>
                       <button
-                        onClick={() => confirmDelete(project.id)}
+                        onClick={() => confirmDelete(project._id)}
                         className="px-3 py-1.5 bg-white hover:bg-gray-200 text-black rounded-md text-sm font-medium"
                       >
                         Delete

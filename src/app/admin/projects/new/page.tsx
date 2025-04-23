@@ -193,10 +193,10 @@ export default function NewProject() {
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-black">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#3490dc] mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white mx-auto"></div>
+          <p className="mt-4 text-white">Loading...</p>
         </div>
       </div>
     );
@@ -209,27 +209,27 @@ export default function NewProject() {
   return (
     <AdminLayout>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold">Add New Project</h1>
+        <h1 className="text-2xl font-bold text-white">Add New Project</h1>
         <Link
           href="/admin/projects"
-          className="text-[#3490dc] hover:text-[#3490dc]/80"
+          className="text-white hover:text-gray-300"
         >
           &larr; Back to Projects
         </Link>
       </div>
       
       {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <div className="bg-red-900 border border-red-700 text-white px-4 py-3 rounded mb-4">
           {error}
         </div>
       )}
       
-      <div className="bg-white rounded-lg shadow p-6">
+      <div className="bg-black rounded-lg shadow p-6 border border-gray-800 text-white">
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Project Title */}
           <div>
-            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-              Title <span className="text-red-500">*</span>
+            <label htmlFor="title" className="block text-sm font-medium text-white mb-1">
+              Title <span className="text-red-400">*</span>
             </label>
             <input
               type="text"
@@ -237,15 +237,15 @@ export default function NewProject() {
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#3490dc] focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
               required
             />
           </div>
           
           {/* Short Description */}
           <div>
-            <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
-              Short Description <span className="text-red-500">*</span>
+            <label htmlFor="description" className="block text-sm font-medium text-white mb-1">
+              Short Description <span className="text-red-400">*</span>
             </label>
             <input
               type="text"
@@ -253,17 +253,17 @@ export default function NewProject() {
               name="description"
               value={formData.description}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#3490dc] focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
               required
               maxLength={500}
             />
-            <p className="mt-1 text-sm text-gray-500">Max 500 characters</p>
+            <p className="mt-1 text-sm text-gray-400">Max 500 characters</p>
           </div>
           
           {/* Full Description */}
           <div>
-            <label htmlFor="fullDescription" className="block text-sm font-medium text-gray-700 mb-1">
-              Full Description <span className="text-red-500">*</span>
+            <label htmlFor="fullDescription" className="block text-sm font-medium text-white mb-1">
+              Full Description <span className="text-red-400">*</span>
             </label>
             <textarea
               id="fullDescription"
@@ -271,22 +271,22 @@ export default function NewProject() {
               value={formData.fullDescription}
               onChange={handleChange}
               rows={6}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#3490dc] focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
               required
             ></textarea>
           </div>
           
           {/* Featured Image Upload */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Featured Image <span className="text-red-500">*</span>
+            <label className="block text-sm font-medium text-white mb-1">
+              Featured Image <span className="text-red-400">*</span>
             </label>
             <div className="mt-1 flex flex-col space-y-4">
               <div className="flex items-center space-x-4">
                 <button
                   type="button"
                   onClick={() => featuredInputRef.current?.click()}
-                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300"
+                  className="px-4 py-2 bg-white text-black rounded-md hover:bg-gray-200"
                   disabled={isUploading}
                 >
                   {isUploading ? 'Uploading...' : 'Upload Featured Image'}
@@ -300,15 +300,15 @@ export default function NewProject() {
                 />
                 {isUploading && (
                   <div className="flex items-center">
-                    <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-[#3490dc] mr-2"></div>
-                    <span className="text-sm text-gray-500">Uploading...</span>
+                    <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white mr-2"></div>
+                    <span className="text-sm text-gray-300">Uploading...</span>
                   </div>
                 )}
               </div>
               
               {/* Featured Image Preview */}
               {featuredPreview && (
-                <div className="relative w-full h-48 overflow-hidden rounded-md border border-gray-300">
+                <div className="relative w-full h-48 overflow-hidden rounded-md border border-gray-700">
                   <Image
                     src={featuredPreview}
                     alt="Featured Preview"
@@ -331,7 +331,7 @@ export default function NewProject() {
           
           {/* Additional Images Upload */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-white mb-1">
               Additional Images
             </label>
             <div className="mt-1 flex flex-col space-y-4">
@@ -339,7 +339,7 @@ export default function NewProject() {
                 <button
                   type="button"
                   onClick={() => additionalInputRef.current?.click()}
-                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300"
+                  className="px-4 py-2 bg-white text-black rounded-md hover:bg-gray-200"
                   disabled={isUploading}
                 >
                   {isUploading ? 'Uploading...' : 'Upload Additional Images'}
@@ -359,7 +359,7 @@ export default function NewProject() {
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
                   {additionalPreviews.map((preview, index) => (
                     <div key={index} className="relative group">
-                      <div className="relative w-full h-32 overflow-hidden rounded-md border border-gray-300">
+                      <div className="relative w-full h-32 overflow-hidden rounded-md border border-gray-700">
                         <Image
                           src={preview}
                           alt={`Additional Image ${index + 1}`}
@@ -383,8 +383,8 @@ export default function NewProject() {
           
           {/* Tags */}
           <div>
-            <label htmlFor="tags" className="block text-sm font-medium text-gray-700 mb-1">
-              Tags <span className="text-red-500">*</span>
+            <label htmlFor="tags" className="block text-sm font-medium text-white mb-1">
+              Tags <span className="text-red-400">*</span>
             </label>
             <input
               type="text"
@@ -392,17 +392,17 @@ export default function NewProject() {
               name="tags"
               value={formData.tags}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#3490dc] focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
               placeholder="e.g. React, Next.js, TailwindCSS"
               required
             />
-            <p className="mt-1 text-sm text-gray-500">Comma separated list of tags</p>
+            <p className="mt-1 text-sm text-gray-400">Comma separated list of tags</p>
           </div>
           
           {/* Project Links */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="link" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="link" className="block text-sm font-medium text-white mb-1">
                 Live Demo URL
               </label>
               <input
@@ -411,13 +411,13 @@ export default function NewProject() {
                 name="link"
                 value={formData.link}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#3490dc] focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
                 placeholder="https://example.com"
               />
             </div>
             
             <div>
-              <label htmlFor="githubLink" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="githubLink" className="block text-sm font-medium text-white mb-1">
                 GitHub Repository URL
               </label>
               <input
@@ -426,7 +426,7 @@ export default function NewProject() {
                 name="githubLink"
                 value={formData.githubLink}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#3490dc] focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent bg-gray-900 text-white"
                 placeholder="https://github.com/username/repo"
               />
             </div>
@@ -440,9 +440,9 @@ export default function NewProject() {
               name="featured"
               checked={formData.featured}
               onChange={handleCheckboxChange}
-              className="h-4 w-4 text-[#3490dc] focus:ring-[#3490dc] border-gray-300 rounded"
+              className="h-4 w-4 text-white focus:ring-white border-gray-700 rounded"
             />
-            <label htmlFor="featured" className="ml-2 block text-sm text-gray-700">
+            <label htmlFor="featured" className="ml-2 block text-sm text-white">
               Feature this project on the homepage
             </label>
           </div>
@@ -452,7 +452,7 @@ export default function NewProject() {
             <button
               type="submit"
               disabled={loading || isUploading}
-              className="px-4 py-2 bg-[#3490dc] text-white rounded-md hover:bg-[#3490dc]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3490dc] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-2 bg-white text-black rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Creating...' : 'Create Project'}
             </button>

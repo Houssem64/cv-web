@@ -11,6 +11,14 @@ if (!MONGODB_URI) {
   );
 }
 
+// Log that we're using the MongoDB URI (without showing credentials)
+const uriParts = MONGODB_URI.split('@');
+if (uriParts.length > 1) {
+  console.log('Using MongoDB URI with host:', uriParts[1].split('/')[0]);
+} else {
+  console.log('Using MongoDB URI (format cannot be determined)');
+}
+
 // Define a global mongoose connection cache
 let globalMongoose = {
   conn: null as mongoose.Connection | null,
@@ -18,25 +26,25 @@ let globalMongoose = {
 };
 
 async function dbConnect() {
+  // Show current connection state if we have one
+  if (mongoose.connection && mongoose.connection.readyState) {
+    const states = ['disconnected', 'connected', 'connecting', 'disconnecting'];
+    console.log(`Current MongoDB connection state: ${states[mongoose.connection.readyState]}`);
+  }
+
   if (globalMongoose.conn) {
+    console.log('Reusing existing MongoDB connection');
     return globalMongoose.conn;
   }
 
   if (!globalMongoose.promise) {
+    // Set mongoose options - keep these simple for better compatibility
     const opts = {
       bufferCommands: false,
-      connectTimeoutMS: 30000, // Increase timeout to 30 seconds
-      socketTimeoutMS: 45000, // Increase socket timeout
-      serverSelectionTimeoutMS: 60000, // Longer server selection timeout
-      ssl: true, // Use SSL
-      retryWrites: true,
-      retryReads: true,
-      maxIdleTimeMS: 120000, // Keep connections alive longer
     };
 
     try {
       console.log('Connecting to MongoDB...', new Date().toISOString());
-      console.log('MongoDB URI format check:', MONGODB_URI.substring(0, 20) + '...');
       
       globalMongoose.promise = mongoose.connect(MONGODB_URI, opts)
         .then((mongoose) => {
@@ -45,7 +53,6 @@ async function dbConnect() {
         })
         .catch(err => {
           console.error('MongoDB connection error:', err.name, err.message);
-          console.error('Connection stack:', err.stack);
           
           // Log additional information that might help diagnose the issue
           if (err.name === 'MongoServerSelectionError') {
@@ -58,7 +65,6 @@ async function dbConnect() {
         });
     } catch (error: any) {
       console.error('Error setting up MongoDB connection:', error.message);
-      console.error('Setup error stack:', error.stack);
       throw error;
     }
   }
@@ -68,7 +74,6 @@ async function dbConnect() {
     return globalMongoose.conn;
   } catch (error: any) {
     console.error('Error awaiting MongoDB connection:', error.message);
-    console.error('Await error stack:', error.stack);
     throw error;
   }
 }

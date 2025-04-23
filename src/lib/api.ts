@@ -11,19 +11,25 @@ function getUrl(path: string): string {
     return path;
   }
   
-  // On server side, we need a full URL
-  // Default to localhost for development
-  const baseUrl = process.env.VERCEL_URL 
-    ? `https://${process.env.VERCEL_URL}`
-    : 'http://localhost:3000';
-    
-  return `${baseUrl}${path}`;
+  // On server side, use the site URL if available, otherwise default to relative path
+  // This works better with Netlify and other hosting providers
+  const siteUrl = process.env.SITE_URL || '';
+  
+  if (siteUrl) {
+    return `${siteUrl}${path}`;
+  }
+  
+  // If no SITE_URL is defined, just use the path directly
+  // This relies on Next.js internal routing capabilities
+  return path;
 }
 
 // Fetch all projects
 export async function getAllProjects(): Promise<Project[]> {
   try {
     const url = getUrl('/api/projects');
+    console.log('Fetching projects from URL:', url);
+    
     const response = await fetch(url, { 
       cache: 'no-store',
       next: { revalidate: 0 } 

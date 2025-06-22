@@ -15,8 +15,8 @@ declare module "next-auth" {
 
 // This is a simple authentication for demo purposes
 // In a real-world application, you would want to fetch the admin user from the database
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@example.com';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123'; // In production, use hashed password stored in env
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL ;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ; // In production, use hashed password stored in env
 
 const handler = NextAuth({
   providers: [

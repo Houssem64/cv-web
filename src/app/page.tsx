@@ -141,10 +141,10 @@ export default async function Home() {
       {/* Contact CTA Section */}
       <section className="py-16 bg-[#3490dc] dark:bg-black text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-4">Need a Backend Solution?</h2>
+          <h2 className="text-3xl font-bold mb-4">Need a Web Solution?</h2>
           <p className="text-xl opacity-90 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
             Let's discuss your requirements for scalable APIs, microservices, or database architecture to power your applications.
-            Let&apos;s discuss your requirements for scalable APIs, microservices, or database architecture to power your applications.          </p>
+            Let&apos;s discuss your requirements to power your applications.          </p>
           <Link href="/contact" className="btn bg-white dark:bg-gray-800 text-[#3490dc] dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
             Get in Touch
           </Link>

@@ -40,11 +40,11 @@ export default async function Home() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16">
           <div className="flex flex-col items-center text-center">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6 dark:text-white">
-              Backend Developer
+              Fullstack Developer
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl">
-              I specialize in building robust and scalable backend systems with Java and Spring Boot. 
-              Creating efficient APIs, microservices, and database solutions that power modern applications.
+              I specialize in building robust and scalable Fullstack Applications. 
+              Creating efficient APIs and database solutions that power modern applications.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/projects" className="btn btn-primary">

@@ -1084,10 +1084,3 @@ ol {
   margin: 0;
   font-size: 1.05rem;
 }
-.hp {
-  position: absolute;
-  left: -9999px;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-}

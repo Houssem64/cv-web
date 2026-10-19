@@ -27,8 +27,9 @@ export default async (req: Request) => {
     return json(400, { error: "Invalid JSON" });
   }
 
-  // Honeypot: real visitors never fill the hidden "website" field.
-  if (typeof data.website === "string" && data.website.trim()) return json(200, { ok: true });
+  // Bot check: the form reports how long it was open; scripted posts omit it or submit instantly.
+  const elapsed = Number(data.elapsed);
+  if (!Number.isFinite(elapsed) || elapsed < 1500) return json(400, { error: "Please take a moment and try again" });
 
   const field = (k: keyof typeof LIMITS) => String(data[k] ?? "").trim().slice(0, LIMITS[k]);
   const name = field("name");
@@ -66,6 +67,7 @@ export default async (req: Request) => {
     return json(502, { error: "Could not send right now" });
   }
   const { id } = (await res.json()) as { id?: string };
+  if (!id) return json(502, { error: "Could not send right now" });
   return json(200, { ok: true, id });
 };
 

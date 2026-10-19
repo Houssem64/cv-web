@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { profile } from "@/data/cv";
 
 const categories = ["Job opportunity", "Contract / freelance", "Question", "Other"];
@@ -15,7 +15,7 @@ export default function TicketForm() {
   const [category, setCategory] = useState(categories[0]);
   const [priority, setPriority] = useState(priorities[0]);
   const [message, setMessage] = useState("");
-  const [website, setWebsite] = useState(""); // honeypot
+  const openedAt = useRef(Date.now()); // sent as `elapsed` for the server-side bot check
   const [status, setStatus] = useState<Status>({ kind: "idle" });
   const [copied, setCopied] = useState(false);
 
@@ -33,10 +33,10 @@ export default function TicketForm() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, category, priority, message, website }),
+        body: JSON.stringify({ name, email, category, priority, message, elapsed: Date.now() - openedAt.current }),
       });
       const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.error || "Could not send right now");
+      if (!res.ok || !data.id) throw new Error(data.error || "Could not send right now");
       setStatus({ kind: "sent", id: data.id });
       setMessage("");
     } catch (err) {
@@ -57,13 +57,20 @@ export default function TicketForm() {
       <div className="ticket panel" role="status">
         <div className="ticket-head">
           <span className="mono dim">ticket submitted</span>
-          <span className="mono ok">● resolved: delivered</span>
+          <span className="mono ok">● accepted · {status.id?.slice(0, 8)}</span>
         </div>
         <p className="ticket-done">
           Thanks{name ? `, ${name}` : ""} — your ticket landed in my inbox. I&apos;ll reply to <strong>{email}</strong> within a day.
         </p>
         <div className="ticket-actions">
-          <button type="button" className="btn" onClick={() => setStatus({ kind: "idle" })}>
+          <button
+            type="button"
+            className="btn"
+            onClick={() => {
+              openedAt.current = Date.now();
+              setStatus({ kind: "idle" });
+            }}
+          >
             open another ticket
           </button>
         </div>
@@ -124,10 +131,6 @@ export default function TicketForm() {
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Role, location, what you need help with…"
         />
-      </label>
-      <label className="hp" aria-hidden>
-        Website
-        <input tabIndex={-1} autoComplete="off" value={website} onChange={(e) => setWebsite(e.target.value)} />
       </label>
       <div className="ticket-actions">
         <button type="submit" className="btn btn-primary" disabled={sending}>

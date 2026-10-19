@@ -1067,3 +1067,27 @@ ol {
     scroll-behavior: auto;
   }
 }
+
+/* ── Ticket states ──────────────────────────────────────── */
+.ticket button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+  transform: none;
+}
+.fine.err {
+  color: var(--bad);
+}
+.fine.err a {
+  color: var(--text);
+}
+.ticket-done {
+  margin: 0;
+  font-size: 1.05rem;
+}
+.hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}

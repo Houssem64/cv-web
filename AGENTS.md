@@ -15,7 +15,7 @@
 ## Local Contracts
 
 - Static export only (`output: "export"`, Netlify publishes `out/`); the only server code is the Netlify Function, no database
-- Secrets live in Netlify env vars only: `RESEND_API_KEY` (required), `CONTACT_TO`, `CONTACT_FROM` (optional; default sender `onboarding@resend.dev` only delivers to the Resend account owner). Local `.env` is gitignored; never commit keys
+- Secrets live in Netlify env vars only: `RESEND_API_KEY` (required), `CONTACT_TO`, `CONTACT_FROM` (optional; default sender `onboarding@resend.dev` only delivers to the Resend account owner, houssem.dev@outlook.com, which is the default `CONTACT_TO`). Local `.env` is gitignored; never commit keys
 - Content must match the CV in `job-application/profile/`; when the CV changes, update `src/data/cv.ts` and re-copy the PDF
 - Private GitHub repos are described but never linked; only public repos get a `url`
 - Theme: colors are CSS tokens on `:root` with dark overrides under `prefers-color-scheme` and `[data-theme="dark"]`

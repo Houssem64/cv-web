@@ -13,7 +13,7 @@ Styled as an ops console: a status bar with live "uptime" since my first day in 
 ## Contact form env vars (Netlify → Site configuration → Environment variables)
 
 - `RESEND_API_KEY` — required
-- `CONTACT_TO` — inbox that receives tickets (default `houssem.sysadmin@gmail.com`)
+- `CONTACT_TO` — inbox that receives tickets (default `houssem.dev@outlook.com`, the Resend account owner)
 - `CONTACT_FROM` — sender (default `Portfolio Ticket <onboarding@resend.dev>`, which only delivers to your Resend account's own email; verify a domain in Resend to send from your own address)
 
 ## Develop

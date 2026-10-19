@@ -1,8 +1,8 @@
 // POST /api/contact — sends the ticket form through Resend.
 // Env: RESEND_API_KEY (required), CONTACT_TO, CONTACT_FROM (optional).
 
-const TO = process.env.CONTACT_TO || "houssem.sysadmin@gmail.com";
-// onboarding@resend.dev works without a verified domain, but only delivers to the Resend account owner's address.
+const TO = process.env.CONTACT_TO || "houssem.dev@outlook.com";
+// onboarding@resend.dev needs no verified domain but only delivers to the Resend account owner (houssem.dev@outlook.com).
 const FROM = process.env.CONTACT_FROM || "Portfolio Ticket <onboarding@resend.dev>";
 
 const LIMITS = { name: 120, email: 200, category: 60, priority: 30, message: 5000 };
